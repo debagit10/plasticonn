@@ -1,13 +1,10 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import {Browser}
+
 
 const App = () => {
   return (
-    <div className="text-center">
-      <Typography variant="caption" className="">
-        HELLO PLASTICONN!!
-      </Typography>
-    </div>
+    
   );
 };
 
