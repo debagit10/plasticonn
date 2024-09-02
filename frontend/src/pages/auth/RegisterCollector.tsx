@@ -1,11 +1,13 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthContainer = React.lazy(
   () => import("../../containers/AuthContainer")
 );
 
 const Register = () => {
+  const navigate = useNavigate();
   return (
     <AuthContainer>
       <div className="flex flex-col w-full mx-5">
@@ -124,34 +126,67 @@ const Register = () => {
             </Stack>
           </Stack>
 
-          <Stack sx={{ marginX: "20%" }}>
-            <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
-              Address <span className="text-red-700">*</span>
-            </Typography>
-            <TextField
-              placeholder="Enter your address"
-              variant="outlined"
-              sx={{
-                padding: "1rem", // Equivalent to p-4
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": {
-                    borderColor: "black", // Equivalent to border-black
-                    borderWidth: "2px",
-                    borderRadius: "31px", // Equivalent to border-2
+          <Stack direction="row" sx={{ marginX: "20%" }}>
+            <Stack sx={{ width: "50%", marginLeft: "3%" }}>
+              <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
+                Address <span className="text-red-700">*</span>
+              </Typography>
+              <TextField
+                placeholder="Enter your address"
+                variant="outlined"
+                sx={{
+                  paddingY: "1rem", // Equivalent to p-4
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "black", // Equivalent to border-black
+                      borderWidth: "2px",
+                      borderRadius: "31px", // Equivalent to border-2
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "black",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#0B490D", // Equivalent to focus:border-[#0B490D]
+                    },
+                    padding: 0, // Reset default padding
                   },
-                  "&:hover fieldset": {
-                    borderColor: "black",
+                  "& input": {
+                    padding: "1rem", // Adding padding inside the input
                   },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#0B490D", // Equivalent to focus:border-[#0B490D]
+                }}
+              />
+            </Stack>
+
+            <Stack sx={{ width: "50%" }}>
+              <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
+                Password <span className="text-red-700">*</span>
+              </Typography>
+              <TextField
+                type="password"
+                placeholder="Enter password"
+                variant="outlined"
+                sx={{
+                  padding: "1rem", // Equivalent to p-4
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "black", // Equivalent to border-black
+                      borderWidth: "2px",
+                      borderRadius: "31px", // Equivalent to border-2
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "black",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#0B490D", // Equivalent to focus:border-[#0B490D]
+                    },
+                    padding: 0, // Reset default padding
                   },
-                  padding: 0, // Reset default padding
-                },
-                "& input": {
-                  padding: "1rem", // Adding padding inside the input
-                },
-              }}
-            />
+                  "& input": {
+                    padding: "1rem", // Adding padding inside the input
+                  },
+                }}
+              />
+            </Stack>
           </Stack>
 
           <Stack direction="row" sx={{ marginX: "20%" }}>
@@ -240,7 +275,12 @@ const Register = () => {
           <div className="flex justify-center mt-3">
             <Typography>
               Already have an account?{" "}
-              <span className="underline cursor-pointer">Login</span>
+              <span
+                className="underline cursor-pointer"
+                onClick={() => navigate("/login-collector")}
+              >
+                Login
+              </span>
             </Typography>
           </div>
         </div>
