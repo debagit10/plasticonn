@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -30,11 +30,11 @@ const Login: React.FC<BodyData> = () => {
 
   const navigate = useNavigate();
 
-  const [formData, setFormData] = React.useState<BodyData>({
+  const [formData, setFormData] = useState<BodyData>({
     email: "",
     password: "",
   });
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
   const [cookies, setCookies] = useCookies();
 
   const isFormDataComplete = () => {
@@ -231,6 +231,3 @@ const Login: React.FC<BodyData> = () => {
 };
 
 export default Login;
-function useState<T>(arg0: { email: any }): [any, any] {
-  throw new Error("Function not implemented.");
-}
