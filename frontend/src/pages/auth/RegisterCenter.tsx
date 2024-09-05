@@ -1,17 +1,111 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Env from "../../Env";
+import { useCookies } from "react-cookie";
+
+const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const AuthContainer = React.lazy(
   () => import("../../containers/AuthContainer")
 );
 
-const RegisterCenter = () => {
+interface BodyData {
+  name?: string;
+  address?: string;
+  person?: string;
+  phone?: string;
+  email?: string;
+  operatingHours?: string;
+  password?: string;
+}
+
+const RegisterCenter: React.FC<BodyData> = () => {
+  let apiUrl: string;
+
+  if (CLIENT_ENV == "prod") {
+    apiUrl = BASE_PROD_API_URL;
+  } else if (CLIENT_ENV == "dev") {
+    apiUrl = BASE_DEV_API_URL;
+  }
+
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState<BodyData>({
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
+    password: "",
+    person: "",
+    operatingHours: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [cookies, setCookies] = useCookies();
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prevstate) => ({
+      ...prevstate,
+      [name]: value,
+    }));
+  };
+
+  const isFormDataComplete = () => {
+    return Object.values(formData).every((value) => value.trim() !== "");
+  };
+
+  const submit = async () => {
+    const config = { headers: { "Content-type": "application/json" } };
+
+    try {
+      setLoading(true);
+      const form = isFormDataComplete();
+
+      if (!form) {
+        setLoading(false);
+        toast.warning("Please fill all fields", {
+          position: "top-center",
+        });
+        return;
+      }
+      const response = await axios.post(
+        `${apiUrl}/api/dropOffCenter/register`,
+        formData,
+        config
+      );
+
+      if (response.data.success) {
+        console.log(response);
+        const userID = response.data.userID;
+        toast.success(response.data.success, {
+          position: "top-center",
+          autoClose: 3000,
+          onClose: () => {
+            navigate(`/${userID}/dashboard`);
+          },
+        });
+        setLoading(false);
+        setCookies("token", response.data.token);
+      }
+    } catch (error: any) {
+      setLoading(false);
+      if (error.response.data.info) {
+        toast.info(error.response.data.info, { position: "top-center" });
+      } else if (error.response.data.error) {
+        toast.error(error.response.data.error, { position: "top-center" });
+      }
+    }
+  };
+
   return (
     <div>
       <AuthContainer>
         <div className="flex flex-col w-full mx-5">
+          <ToastContainer />
           <Typography
             variant="h4"
             sx={{
@@ -38,6 +132,9 @@ const RegisterCenter = () => {
                 Center Name <span className="text-red-700">*</span>
               </Typography>
               <TextField
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
                 placeholder="Enter center's name"
                 variant="outlined"
                 sx={{
@@ -69,6 +166,9 @@ const RegisterCenter = () => {
                   Email <span className="text-red-700">*</span>
                 </Typography>
                 <TextField
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   type="email"
                   placeholder="example@email.com"
                   variant="outlined"
@@ -100,6 +200,9 @@ const RegisterCenter = () => {
                   Phone number <span className="text-red-700">*</span>
                 </Typography>
                 <TextField
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
                   type="tel"
                   placeholder="Enter center's number"
                   variant="outlined"
@@ -133,6 +236,9 @@ const RegisterCenter = () => {
                   Address <span className="text-red-700">*</span>
                 </Typography>
                 <TextField
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
                   placeholder="Enter your address"
                   variant="outlined"
                   sx={{
@@ -163,6 +269,9 @@ const RegisterCenter = () => {
                   Password <span className="text-red-700">*</span>
                 </Typography>
                 <TextField
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
                   type="password"
                   placeholder="Enter password"
                   variant="outlined"
@@ -196,6 +305,9 @@ const RegisterCenter = () => {
                   Person contact <span className="text-red-700">*</span>
                 </Typography>
                 <TextField
+                  name="person"
+                  value={formData.person}
+                  onChange={handleInputChange}
                   placeholder="phone number or email"
                   variant="outlined"
                   sx={{
@@ -226,6 +338,9 @@ const RegisterCenter = () => {
                   Operating hours <span className="text-red-700">*</span>
                 </Typography>
                 <TextField
+                  name="operatingHours"
+                  value={formData.operatingHours}
+                  onChange={handleInputChange}
                   placeholder="e.g 9am - 5pm"
                   variant="outlined"
                   sx={{
@@ -266,8 +381,10 @@ const RegisterCenter = () => {
                     backgroundColor: "#0B490D",
                   },
                 }}
+                disabled={loading}
+                onClick={submit}
               >
-                Sign up
+                {loading ? "Signing up..." : "Sign up"}
               </Button>
             </div>
 
