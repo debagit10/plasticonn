@@ -1,16 +1,144 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Env from "../../Env";
+import { useCookies } from "react-cookie";
+
+const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const AuthContainer = React.lazy(
   () => import("../../containers/AuthContainer")
 );
 
-const Register = () => {
+interface BodyData {
+  fullName?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  password?: string;
+  means_of_ID?: string;
+  pic?: string;
+}
+
+const Register: React.FC<BodyData> = () => {
+  let apiUrl: string;
+
+  if (CLIENT_ENV == "prod") {
+    apiUrl = BASE_PROD_API_URL;
+  } else if (CLIENT_ENV == "dev") {
+    apiUrl = BASE_DEV_API_URL;
+  }
+
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState<BodyData>({
+    fullName: "",
+    phone: "",
+    email: "",
+    address: "",
+    password: "",
+    means_of_ID: "",
+    pic: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [cookies, setCookies] = useCookies();
+
+  const isFormDataComplete = () => {
+    return Object.values(formData).every((value) => value.trim() !== "");
+  };
+
+  const [fileUrl, setFileUrl] = useState("");
+  const [picUrl, setPicUrl] = useState<string>("");
+
+  const uploadPicture = async (event: any) => {
+    const pic = event.target.files[0]; // Get the first file from the input
+    const data = new FormData();
+    data.append("image", pic);
+    try {
+      const response = await axios.post(`${apiUrl}/api/upload/pics`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      setPicUrl(response.data.imageUrl);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const uploadFile = async (event: any) => {
+    const file = event.target.files[0]; // Get the first file from the input
+    const data = new FormData();
+    data.append("file", file);
+    try {
+      const response = await axios.post(`${apiUrl}/api/upload/file`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      setFileUrl(response.data.fileUrl);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const submit = async () => {
+    const config = { headers: { "Content-type": "application/json" } };
+    formData.pic = picUrl;
+    formData.means_of_ID = fileUrl;
+
+    try {
+      setLoading(true);
+      const form = isFormDataComplete();
+      console.log(form);
+      if (!form) {
+        toast.warning("Please fill all fields", {
+          position: "top-center",
+        });
+        return;
+      }
+      const response = await axios.post(
+        `${apiUrl}/api/collector/register`,
+        formData,
+        config
+      );
+
+      if (response.data.success) {
+        const userID = response.data.userID;
+        toast.success(response.data.success, {
+          position: "top-center",
+          autoClose: 3000,
+          onClose: () => {
+            navigate(`/${userID}/dashboard`);
+          },
+        });
+        setLoading(false);
+        setCookies("token", response.data.token);
+      }
+    } catch (error: any) {
+      setLoading(false);
+      if (error.response.data.info) {
+        toast.info(error.response.data.info, { position: "top-center" });
+      } else if (error.response.data.error) {
+        toast.error(error.response.data.error, { position: "top-center" });
+      }
+    }
+  };
+
   return (
     <AuthContainer>
       <div className="flex flex-col w-full mx-5">
+        <ToastContainer />
         <Typography
           variant="h4"
           sx={{
@@ -37,6 +165,9 @@ const Register = () => {
               Full Name <span className="text-red-700">*</span>
             </Typography>
             <TextField
+              onChange={handleInputChange}
+              name="fullName"
+              value={formData.fullName}
               placeholder="Enter your name"
               variant="outlined"
               sx={{
@@ -68,6 +199,9 @@ const Register = () => {
                 Email <span className="text-red-700">*</span>
               </Typography>
               <TextField
+                onChange={handleInputChange}
+                name="email"
+                value={formData.email}
                 type="email"
                 placeholder="example@email.com"
                 variant="outlined"
@@ -99,6 +233,9 @@ const Register = () => {
                 Phone number <span className="text-red-700">*</span>
               </Typography>
               <TextField
+                onChange={handleInputChange}
+                name="phone"
+                value={formData.phone}
                 type="tel"
                 placeholder="Enter your phone number"
                 variant="outlined"
@@ -132,6 +269,9 @@ const Register = () => {
                 Address <span className="text-red-700">*</span>
               </Typography>
               <TextField
+                onChange={handleInputChange}
+                name="address"
+                value={formData.address}
                 placeholder="Enter your address"
                 variant="outlined"
                 sx={{
@@ -162,6 +302,9 @@ const Register = () => {
                 Password <span className="text-red-700">*</span>
               </Typography>
               <TextField
+                onChange={handleInputChange}
+                name="password"
+                value={formData.password}
                 type="password"
                 placeholder="Enter password"
                 variant="outlined"
@@ -195,8 +338,8 @@ const Register = () => {
                 Means of ID <span className="text-red-700">*</span>
               </Typography>
               <TextField
+                onChange={uploadFile}
                 type="file"
-                placeholder="example@email.com"
                 variant="outlined"
                 sx={{
                   paddingY: "1rem", // Equivalent to p-4
@@ -226,8 +369,8 @@ const Register = () => {
                 Profile picture <span className="text-red-700">*</span>
               </Typography>
               <TextField
+                onChange={uploadPicture}
                 type="file"
-                placeholder="Enter your phone number"
                 variant="outlined"
                 sx={{
                   padding: "1rem", // Equivalent to p-4
@@ -267,8 +410,10 @@ const Register = () => {
                   backgroundColor: "#0B490D",
                 },
               }}
+              onClick={submit}
+              disabled={loading}
             >
-              Sign up
+              {loading ? "Signing up..." : "Sign up"}
             </Button>
           </div>
 
