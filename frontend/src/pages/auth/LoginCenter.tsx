@@ -1,17 +1,107 @@
 import React from "react";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Env from "../../Env";
+import { useCookies } from "react-cookie";
+
+const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const AuthContainer = React.lazy(
   () => import("../../containers/AuthContainer")
 );
 
-const Login = () => {
+interface BodyData {
+  email?: string;
+  password?: string;
+  centerID?: string;
+}
+
+const Login: React.FC<BodyData> = () => {
+  let apiUrl: string;
+
+  if (CLIENT_ENV == "prod") {
+    apiUrl = BASE_PROD_API_URL;
+  } else if (CLIENT_ENV == "dev") {
+    apiUrl = BASE_DEV_API_URL;
+  }
+
   const navigate = useNavigate();
+
+  const [formData, setFormData] = React.useState<BodyData>({
+    email: "",
+    password: "",
+  });
+  const [loading, setLoading] = React.useState(false);
+  const [cookies, setCookies] = useCookies();
+
+  const isFormDataComplete = () => {
+    return Object.values(formData).every((value) => value.trim() !== "");
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData((prevdata) => ({
+      ...prevdata,
+      [name]: value,
+    }));
+  };
+
+  const submit = async () => {
+    const config = { headers: { "Content-type": "application/json" } };
+
+    try {
+      setLoading(true);
+      const form = isFormDataComplete();
+
+      if (!form) {
+        setLoading(false);
+        toast.warning("Please fill all fields", {
+          position: "top-center",
+        });
+        return;
+      }
+      const response = await axios.post(
+        `${apiUrl}/api/dropOffCenter/login`,
+        formData,
+        config
+      );
+      console.log(response);
+      if (response.data.success) {
+        const userID = response.data.userID;
+        toast.success(response.data.success, {
+          position: "top-center",
+          autoClose: 1000,
+          onClose: () => {
+            navigate(`/${userID}/dashboard`);
+          },
+        });
+        setLoading(false);
+        setCookies("token", response.data.token);
+      }
+    } catch (error: any) {
+      setLoading(false);
+      if (error.response.data.info) {
+        toast.info(error.response.data.info, {
+          position: "top-center",
+          autoClose: 1000,
+        });
+      } else if (error.response.data.error) {
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 1000,
+        });
+      }
+    }
+  };
+
   return (
     <div>
       <AuthContainer>
         <div className="flex flex-col w-full mx-5">
+          <ToastContainer />
           <Typography
             variant="h4"
             sx={{
@@ -38,6 +128,9 @@ const Login = () => {
                 Center's ID or Email <span className="text-red-700">*</span>
               </Typography>
               <TextField
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
                 type="email"
                 placeholder="Enter your center's ID or email"
                 variant="outlined"
@@ -69,6 +162,9 @@ const Login = () => {
                 Password <span className="text-red-700">*</span>
               </Typography>
               <TextField
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
                 type="password"
                 placeholder="Enter your password"
                 variant="outlined"
@@ -109,8 +205,10 @@ const Login = () => {
                     backgroundColor: "#0B490D",
                   },
                 }}
+                disabled={loading}
+                onClick={submit}
               >
-                Login
+                {loading ? "Logging in..." : "Login"}
               </Button>
             </div>
 
@@ -133,3 +231,6 @@ const Login = () => {
 };
 
 export default Login;
+function useState<T>(arg0: { email: any }): [any, any] {
+  throw new Error("Function not implemented.");
+}
