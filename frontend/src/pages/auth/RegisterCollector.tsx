@@ -117,7 +117,7 @@ const Register: React.FC<BodyData> = () => {
         const userID = response.data.userID;
         toast.success(response.data.success, {
           position: "top-center",
-          autoClose: 3000,
+          autoClose: 1000,
           onClose: () => {
             navigate(`/${userID}/dashboard`);
           },
@@ -128,9 +128,15 @@ const Register: React.FC<BodyData> = () => {
     } catch (error: any) {
       setLoading(false);
       if (error.response.data.info) {
-        toast.info(error.response.data.info, { position: "top-center" });
+        toast.info(error.response.data.info, {
+          position: "top-center",
+          autoClose: 1000,
+        });
       } else if (error.response.data.error) {
-        toast.error(error.response.data.error, { position: "top-center" });
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 1000,
+        });
       }
     }
   };
