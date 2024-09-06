@@ -10,18 +10,20 @@ import {
   FormControlLabel,
   FormGroup,
   FormControl,
-  FormLabel,
   Radio,
   RadioGroup,
   Typography,
+  Stack,
 } from "@mui/material";
-import { pink } from "@mui/material/colors";
+
 import React, { useState } from "react";
 
 interface FormData {
   type: string[];
   condition: string;
   amount: number;
+  collectorID: string;
+  centerID: string;
 }
 
 const DropModal = () => {
@@ -31,6 +33,8 @@ const DropModal = () => {
     type: [],
     condition: "",
     amount: 0,
+    collectorID: "",
+    centerID: "",
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,27 +109,69 @@ const DropModal = () => {
           <DialogContentText id="drop-form">
             <div className="flex flex-col">
               <FormControl fullWidth margin="normal">
-                <TextField
-                  type="number"
-                  label="Amount"
-                  variant="outlined"
-                  name="amount"
-                  value={formData.amount}
-                  onChange={handleChange}
-                  sx={{
-                    "& label.Mui-focused": {
-                      color: "green", // Change label color when focused
-                    },
-                    "& .MuiOutlinedInput-root": {
-                      "& fieldset": {
-                        borderColor: "green", // Change border color
+                <Stack spacing={2}>
+                  <TextField
+                    type="number"
+                    label="Amount"
+                    variant="outlined"
+                    name="amount"
+                    value={formData.amount}
+                    onChange={handleChange}
+                    sx={{
+                      "& label.Mui-focused": {
+                        color: "green", // Change label color when focused
                       },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "green", // Change border color when focused
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "green", // Change border color
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "green", // Change border color when focused
+                        },
                       },
-                    },
-                  }}
-                />
+                    }}
+                  />
+                  <TextField
+                    label="CenterID"
+                    variant="outlined"
+                    name="amount"
+                    value={formData.centerID}
+                    onChange={handleChange}
+                    sx={{
+                      "& label.Mui-focused": {
+                        color: "green", // Change label color when focused
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "green", // Change border color
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "green", // Change border color when focused
+                        },
+                      },
+                    }}
+                  />
+                  <TextField
+                    label="CollectorID"
+                    variant="outlined"
+                    name="collectorID"
+                    value={formData.collectorID}
+                    onChange={handleChange}
+                    sx={{
+                      "& label.Mui-focused": {
+                        color: "green", // Change label color when focused
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "green", // Change border color
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "green", // Change border color when focused
+                        },
+                      },
+                    }}
+                  />
+                </Stack>
               </FormControl>
 
               <FormControl component="fieldset" margin="normal">

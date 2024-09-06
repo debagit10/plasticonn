@@ -5,9 +5,7 @@ import {
   Typography,
   Stack,
   Chip,
-  Button,
   CardActionArea,
-  Grid,
 } from "@mui/material";
 
 import React from "react";
@@ -15,6 +13,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import CalculateDistance from "../utils/CalculateDistance";
 import { useCookies } from "react-cookie";
+import DropModal from "../modals/DropModal";
 
 const DropOff = () => {
   const [cookies, setCookies] = useCookies();
@@ -78,20 +77,7 @@ const DropOff = () => {
 
             <div className="flex justify-center m-5">
               <CardActionArea>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#0B490D",
-                    borderRadius: "31px",
-                    textTransform: "capitalize",
-                    "&:hover": {
-                      backgroundColor: "#0B490D",
-                    },
-                  }}
-                >
-                  Drop off
-                </Button>
+                <DropModal />
               </CardActionArea>
             </div>
           </Card>
@@ -135,20 +121,7 @@ const DropOff = () => {
 
             <div className="flex justify-center m-5">
               <CardActionArea>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#0B490D",
-                    borderRadius: "31px",
-                    textTransform: "capitalize",
-                    "&:hover": {
-                      backgroundColor: "#0B490D",
-                    },
-                  }}
-                >
-                  Drop off
-                </Button>
+                <DropModal />
               </CardActionArea>
             </div>
           </Card>
@@ -192,20 +165,7 @@ const DropOff = () => {
 
             <div className="flex justify-center m-5">
               <CardActionArea>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#0B490D",
-                    borderRadius: "31px",
-                    textTransform: "capitalize",
-                    "&:hover": {
-                      backgroundColor: "#0B490D",
-                    },
-                  }}
-                >
-                  Drop off
-                </Button>
+                <DropModal />
               </CardActionArea>
             </div>
           </Card>
@@ -249,20 +209,7 @@ const DropOff = () => {
 
             <div className="flex justify-center m-5">
               <CardActionArea>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#0B490D",
-                    borderRadius: "31px",
-                    textTransform: "capitalize",
-                    "&:hover": {
-                      backgroundColor: "#0B490D",
-                    },
-                  }}
-                >
-                  Drop off
-                </Button>
+                <DropModal />
               </CardActionArea>
             </div>
           </Card>
@@ -306,20 +253,7 @@ const DropOff = () => {
 
             <div className="flex justify-center m-5">
               <CardActionArea>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#0B490D",
-                    borderRadius: "31px",
-                    textTransform: "capitalize",
-                    "&:hover": {
-                      backgroundColor: "#0B490D",
-                    },
-                  }}
-                >
-                  Drop off
-                </Button>
+                <DropModal />
               </CardActionArea>
             </div>
           </Card>
@@ -363,20 +297,7 @@ const DropOff = () => {
 
             <div className="flex justify-center m-5">
               <CardActionArea>
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#0B490D",
-                    borderRadius: "31px",
-                    textTransform: "capitalize",
-                    "&:hover": {
-                      backgroundColor: "#0B490D",
-                    },
-                  }}
-                >
-                  Drop off
-                </Button>
+                <DropModal />
               </CardActionArea>
             </div>
           </Card>

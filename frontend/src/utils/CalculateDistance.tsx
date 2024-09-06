@@ -16,7 +16,6 @@ const CalculateDistance: React.FC<DataProps> = ({
 }) => {
   const from = turf.point([myLongitude, myLatitude]); // [longitude, latitude]
   const to = turf.point([centerLongitude, centerLatitude]); // [longitude, latitude]
-  console.log(myLatitude, myLongitude, centerLatitude, centerLongitude);
 
   // Calculate the distance between the two points
   const options = { units: "miles" };
