@@ -15,7 +15,7 @@ import CalculateDistance from "../utils/CalculateDistance";
 import { useCookies } from "react-cookie";
 import DropModal from "../modals/DropModal";
 
-const DropOff = () => {
+const DropOffCenters = () => {
   const [cookies, setCookies] = useCookies();
 
   const successCallback = (position: any) => {
@@ -307,4 +307,4 @@ const DropOff = () => {
   );
 };
 
-export default DropOff;
+export default DropOffCenters;

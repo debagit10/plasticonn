@@ -9,7 +9,9 @@ const RegisterCenter = React.lazy(() => import("./pages/auth/RegisterCenter"));
 const LoginCollector = React.lazy(() => import("./pages/auth/LoginCollector"));
 const LoginCenter = React.lazy(() => import("./pages/auth/LoginCenter"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
-const DropOff = React.lazy(() => import("./pages/DropOff"));
+const DropOff = React.lazy(() => import("./pages/DropOffCenters"));
+const DropOffs = React.lazy(() => import("./pages/DropOffs"));
+const ViewDrop = React.lazy(() => import("./pages/ViewDrop"));
 
 const App = () => {
   return (
@@ -21,7 +23,9 @@ const App = () => {
         <Route path="/login-collector" Component={LoginCollector} />
         <Route path="/login-center" Component={LoginCenter} />
         <Route path="/:id/dashboard" Component={Dashboard} />
-        <Route path="/:id/dropoff" Component={DropOff} />
+        <Route path="/dropoff" Component={DropOff} />
+        <Route path="/:id/dropoffs" Component={DropOffs} />
+        <Route path="/dropoff/:id/view" Component={ViewDrop} />
       </Routes>
     </Suspense>
   );

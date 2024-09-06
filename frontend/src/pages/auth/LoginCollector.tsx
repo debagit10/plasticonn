@@ -78,7 +78,8 @@ const LoginCollector: React.FC<BodyData> = () => {
           },
         });
         setLoading(false);
-        setCookies("token", response.data.token);
+        setCookies("token", response.data.token.encryptedToken);
+        setCookies("role", "collector");
       }
     } catch (error: any) {
       setLoading(false);

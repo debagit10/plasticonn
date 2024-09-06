@@ -305,7 +305,7 @@ const DropModal = () => {
             }}
             onClick={submit}
           >
-            Drop off
+            Drop
           </Button>
         </DialogActions>
       </Dialog>

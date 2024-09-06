@@ -7,7 +7,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (!cookies.token) {
-      navigate("/login-collector");
+      navigate(`/login-${cookies.role}`);
     }
   });
   return <div>Dashboard</div>;
