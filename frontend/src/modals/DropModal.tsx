@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -15,8 +16,13 @@ import {
   Typography,
   Stack,
 } from "@mui/material";
+import axios from "axios";
+import Env from "../Env";
+import { useCookies } from "react-cookie";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import React, { useState } from "react";
+const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 interface FormData {
   type: string[];
@@ -24,10 +30,13 @@ interface FormData {
   amount: number;
   collectorID: string;
   centerID: string;
+  location: number[];
 }
 
 const DropModal = () => {
+  const [cookies, setCookies] = useCookies();
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState<FormData>({
     type: [],
@@ -35,6 +44,7 @@ const DropModal = () => {
     amount: 0,
     collectorID: "",
     centerID: "",
+    location: [],
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +56,7 @@ const DropModal = () => {
   };
 
   const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, checked, value } = event.target;
+    const { checked, value } = event.target;
 
     setFormData((prevState) => {
       const updatedTypes = checked
@@ -76,12 +86,72 @@ const DropModal = () => {
     setOpen(false);
   };
 
-  const submit = () => {
-    console.log(formData);
+  let apiUrl: string;
+
+  if (CLIENT_ENV == "prod") {
+    apiUrl = BASE_PROD_API_URL;
+  } else if (CLIENT_ENV == "dev") {
+    apiUrl = BASE_DEV_API_URL;
+  }
+
+  const submit = async () => {
+    formData.location.push(cookies.Longitude);
+    formData.location.push(cookies.latitude);
+
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${cookies.token}`,
+      },
+    };
+
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        `${apiUrl}/api/drop/add`,
+        formData,
+        config
+      );
+      console.log(response.data.success);
+      if (response.data.success) {
+        toast.success(response.data.success, {
+          autoClose: 1500,
+          position: "top-center",
+          onClose: () => {
+            handleClose();
+          },
+        });
+        setLoading(false);
+        setFormData({
+          type: [],
+          condition: "",
+          amount: 0,
+          collectorID: "",
+          centerID: "",
+          location: [],
+        });
+      }
+    } catch (error: any) {
+      if (error.response.data.error) {
+        toast.error(error.response.data.error, {
+          position: "top-center",
+          autoClose: 1000,
+        });
+        setFormData({
+          type: [],
+          condition: "",
+          amount: 0,
+          collectorID: "",
+          centerID: "",
+          location: [],
+        });
+      }
+    }
   };
 
   return (
     <div>
+      <ToastContainer />
       <Button
         fullWidth
         variant="contained"
@@ -134,28 +204,8 @@ const DropModal = () => {
                   <TextField
                     label="CenterID"
                     variant="outlined"
-                    name="amount"
+                    name="centerID"
                     value={formData.centerID}
-                    onChange={handleChange}
-                    sx={{
-                      "& label.Mui-focused": {
-                        color: "green", // Change label color when focused
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "green", // Change border color
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "green", // Change border color when focused
-                        },
-                      },
-                    }}
-                  />
-                  <TextField
-                    label="CollectorID"
-                    variant="outlined"
-                    name="collectorID"
-                    value={formData.collectorID}
                     onChange={handleChange}
                     sx={{
                       "& label.Mui-focused": {
@@ -183,8 +233,8 @@ const DropModal = () => {
                     control={
                       <Checkbox
                         name="type"
-                        value="checkbox1"
-                        checked={formData.type.includes("checkbox1")}
+                        value="PPT"
+                        checked={formData.type.includes("PPT")}
                         onChange={handleCheckboxChange}
                         sx={{
                           color: "#3F7641",
@@ -194,14 +244,14 @@ const DropModal = () => {
                         }}
                       />
                     }
-                    label="Checkbox 1"
+                    label="PPT"
                   />
                   <FormControlLabel
                     control={
                       <Checkbox
                         name="type"
-                        value="checkbox2"
-                        checked={formData.type.includes("checkbox2")}
+                        value="PET"
+                        checked={formData.type.includes("PET")}
                         onChange={handleCheckboxChange}
                         sx={{
                           color: "#3F7641",
@@ -211,14 +261,14 @@ const DropModal = () => {
                         }}
                       />
                     }
-                    label="Checkbox 2"
+                    label="PET"
                   />
                   <FormControlLabel
                     control={
                       <Checkbox
                         name="type"
-                        value="checkbox3"
-                        checked={formData.type.includes("checkbox3")}
+                        value="PVC"
+                        checked={formData.type.includes("PVC")}
                         onChange={handleCheckboxChange}
                         sx={{
                           color: "#3F7641",
@@ -228,7 +278,7 @@ const DropModal = () => {
                         }}
                       />
                     }
-                    label="Checkbox 3"
+                    label="PVC"
                   />
                 </FormGroup>
               </FormControl>
@@ -303,9 +353,10 @@ const DropModal = () => {
                 backgroundColor: "#0B490D",
               },
             }}
+            disabled={loading}
             onClick={submit}
           >
-            Drop
+            {loading ? "Dropping off..." : "Drop off"}
           </Button>
         </DialogActions>
       </Dialog>
