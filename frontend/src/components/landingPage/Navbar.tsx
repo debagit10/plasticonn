@@ -13,7 +13,7 @@ const Navbar = () => {
     { name: "Epicollect", link: "/epicollect" },
   ];
   return (
-    <div className="flex justify-between md:justify-around ">
+    <div className="flex justify-between md:justify-around bg-gradient-to-b from-[#D9F0DA] to-white">
       <div className="flex">
         <div>
           <img src={logo} alt="plasticonn logo" className="w-28 h-28 " />

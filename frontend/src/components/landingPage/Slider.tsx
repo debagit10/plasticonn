@@ -44,7 +44,11 @@ const Slider = () => {
         open={open}
         onClose={toggleDrawer(false)}
         anchor="right"
-        sx={{ "& .MuiPaper-root": { backgroundColor: "#D9F0DA" } }}
+        sx={{
+          "& .MuiPaper-root": {
+            backgroundImage: "linear-gradient(to bottom, #D9F0DA, white)",
+          },
+        }}
       >
         <div
           className="flex justify-start mx-5 my-3"
