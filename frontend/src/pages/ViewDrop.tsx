@@ -4,6 +4,8 @@ import { useCookies } from "react-cookie";
 import { Button, Paper, Stack, Typography } from "@mui/material";
 import Env from "../Env";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 interface Detail {
@@ -32,19 +34,67 @@ const ViewDrop = () => {
     apiUrl = BASE_DEV_API_URL;
   }
 
-  const dropDetail = async () => {
-    const config = {
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${cookies.token}`,
-      },
-    };
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${cookies.token}`,
+    },
+  };
 
+  const dropDetail = async () => {
     try {
       const response = await axios.get(`${apiUrl}/api/drop/view?dropID=${id}`, {
         headers: config.headers,
       });
       setDetail(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const acceptDrop = async () => {
+    const status = true;
+    const dropID = detail?._id;
+
+    const data = { status, dropID };
+
+    try {
+      const response = await axios.patch(
+        `${apiUrl}/api/drop/manage`,
+        data,
+        config
+      );
+
+      if (response.data.accepted === true) {
+        toast.success("Drop accepted successfully", {
+          position: "top-center",
+          autoClose: 1500,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const rejectDrop = async () => {
+    const status = false;
+    const dropID = detail?._id;
+
+    const data = { status, dropID };
+
+    try {
+      const response = await axios.patch(
+        `${apiUrl}/api/drop/manage`,
+        data,
+        config
+      );
+
+      if (response.data.accepted === false) {
+        toast.success("Drop rejected successfully", {
+          position: "top-center",
+          autoClose: 1500,
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -56,6 +106,7 @@ const ViewDrop = () => {
 
   return (
     <div className="flex justify-center items-center m-10">
+      <ToastContainer />
       <Paper
         sx={{ padding: "10px", maxWidth: 345, backgroundColor: "#D9F0DA" }}
       >
@@ -96,6 +147,7 @@ const ViewDrop = () => {
                   borderColor: "white",
                 },
               }}
+              onClick={rejectDrop}
             >
               Reject
             </Button>
@@ -109,6 +161,7 @@ const ViewDrop = () => {
                   backgroundColor: "#0B490D",
                 },
               }}
+              onClick={acceptDrop}
             >
               Accept
             </Button>
