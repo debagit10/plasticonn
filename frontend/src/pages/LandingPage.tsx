@@ -7,6 +7,7 @@ import Coverage from "../components/landingPage/dashboard/Coverage";
 import Plastics from "../components/landingPage/dashboard/Plastics";
 import Recycling from "../components/landingPage/dashboard/Recycling";
 import RecyclingRate from "../components/landingPage/dashboard/RecyclingRate";
+import Goals from "../components/landingPage/Goals";
 import Navbar from "../components/landingPage/Navbar";
 
 const LandingPage = () => {
@@ -49,6 +50,15 @@ const LandingPage = () => {
 
       <div className="flex justify-center ">
         <About />
+      </div>
+
+      <div>
+        <div className="flex justify-center my-5">
+          <Typography fontWeight={700} color="#047308" variant="h5">
+            Our Goals/Aims
+          </Typography>
+        </div>
+        <Goals />
       </div>
     </div>
   );
