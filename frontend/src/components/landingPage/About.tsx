@@ -3,7 +3,7 @@ import React from "react";
 
 const About = () => {
   return (
-    <div className="bg-[#D9F0DA] grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="bg-[#f0f7f0] grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>Hi</div>
       <div className="m-10">
         <Typography fontWeight={700} color="#047308" variant="h5">
