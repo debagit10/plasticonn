@@ -1,5 +1,6 @@
 import { Typography } from "@mui/material";
 import React from "react";
+import About from "../components/landingPage/About";
 import CollectionCenters from "../components/landingPage/dashboard/CollectionCenters";
 import Collectors from "../components/landingPage/dashboard/Collectors";
 import Coverage from "../components/landingPage/dashboard/Coverage";
@@ -44,6 +45,10 @@ const LandingPage = () => {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="flex justify-center ">
+        <About />
       </div>
     </div>
   );
