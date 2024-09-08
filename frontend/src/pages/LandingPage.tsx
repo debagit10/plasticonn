@@ -9,6 +9,15 @@ import RecyclingRate from "../components/landingPage/dashboard/RecyclingRate";
 import Navbar from "../components/landingPage/Navbar";
 
 const LandingPage = () => {
+  const dashBoardMetrics = [
+    <Collectors />,
+    <Plastics />,
+    <Recycling />,
+    <Coverage />,
+    <RecyclingRate />,
+    <CollectionCenters />,
+  ];
+
   return (
     <div>
       <div>
@@ -29,12 +38,11 @@ const LandingPage = () => {
 
       <div className="flex justify-center m-10 text-center">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          <Collectors />
-          <Plastics />
-          <Recycling />
-          <Coverage />
-          <RecyclingRate />
-          <CollectionCenters />
+          {dashBoardMetrics.map((item) => (
+            <div className="flex justify-center m-2 items-center p-4 bg-gradient-to-b from-[#D9F0DA] to-white hover:shadow-lg hover:bg-[#F0FFF4] hover:scale-105 hover:cursor-pointer transition-transform duration-300 ease-in-out rounded-lg">
+              {item}
+            </div>
+          ))}
         </div>
       </div>
     </div>
