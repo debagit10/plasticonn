@@ -81,6 +81,7 @@ const Slider = () => {
               backgroundColor: "#047308",
               borderRadius: "31px",
               textTransform: "capitalize",
+
               "&:hover": {
                 color: "#047308",
                 backgroundColor: "white",
