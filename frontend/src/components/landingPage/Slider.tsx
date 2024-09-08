@@ -85,6 +85,7 @@ const Slider = () => {
                 color: "#047308",
                 backgroundColor: "white",
                 borderColor: "#047308",
+                backgroundImage: "linear-gradient(to bottom, #D9F0DA, white)",
               },
             }}
             startIcon={<RiAccountCircleLine />}

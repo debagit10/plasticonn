@@ -46,10 +46,7 @@ const Navbar = () => {
         </ul>
       </div>
 
-      <div
-        className="mt-[2%] hidden sm:block mr-5
-      "
-      >
+      <div className="mt-[2%] hidden sm:block mr-5">
         <Button
           variant="outlined"
           sx={{
@@ -62,6 +59,7 @@ const Navbar = () => {
               color: "#047308",
               backgroundColor: "white",
               borderColor: "#047308",
+              backgroundImage: "linear-gradient(to bottom, #D9F0DA, white)",
             },
           }}
           startIcon={<RiAccountCircleLine />}
