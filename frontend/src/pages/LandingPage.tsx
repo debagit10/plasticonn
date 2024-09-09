@@ -10,6 +10,7 @@ import RecyclingRate from "../components/landingPage/dashboard/RecyclingRate";
 import Footer from "../components/landingPage/Footer";
 import Goals from "../components/landingPage/Goals";
 import Navbar from "../components/landingPage/Navbar";
+import Value from "../components/landingPage/Values";
 
 const LandingPage = () => {
   const dashBoardMetrics = [
@@ -52,6 +53,10 @@ const LandingPage = () => {
 
       <div className="flex justify-center ">
         <About />
+      </div>
+
+      <div className="flex justify-center mt-10">
+        <Value />
       </div>
 
       <div>
