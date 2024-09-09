@@ -4,16 +4,20 @@ import logo from "../../images/logo.png";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { FiPhone } from "react-icons/fi";
+import { FaInstagram } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { FiLinkedin } from "react-icons/fi";
 
 const Footer = () => {
+  const socialIcons = [<FaInstagram />, <FaXTwitter />, <FiLinkedin />];
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 bg-[#1D1D1D] text-white m-5 py-5 rounded-lg">
       <div>
-        <div className="flex flex-col sm:flex-row justify-center ">
-          <div>
+        <div className="flex justify-center ">
+          <div className="">
             <img src={logo} alt="plasticonn logo" className="w-16 h-16 " />
           </div>
-          <div className="sm:mt-[3%]">
+          <div className="mt-[3%]">
             <Typography fontWeight={700} color="#047308" variant="h5">
               PLASTICONN
             </Typography>
@@ -24,6 +28,14 @@ const Footer = () => {
             They are a team of enthusiastic individuals committed to fostering a
             cleaner, healthier environment free from plastic pollution.
           </Typography>
+        </div>
+
+        <div className="flex justify-center gap-4">
+          {socialIcons.map((icon) => (
+            <div className="border-2 border-white cursor-pointer p-2 rounded-full">
+              {icon}
+            </div>
+          ))}
         </div>
       </div>
 
