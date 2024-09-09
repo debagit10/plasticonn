@@ -14,7 +14,7 @@ const Goals = () => {
             make this scalable, and a reality.
           </Typography>
 
-          <div className="border-[#047308] border p-5 -rotate-2 rounded-lg">
+          <div className="border-[#047308] border p-5 -rotate-2 rounded-lg mt-5">
             <Typography variant="body2">
               We waste less, live more. make recycling a habit, make
               sustainability a Lifestyle
