@@ -13,10 +13,10 @@ const About = () => {
           <Typography variant="body2" fontWeight={400}>
             Our mission is to facilitate connections and bridge the gap between
             plastic collectors and plastic collection centers by leveraging
-            geolocation technology and citizens science.By streamlining the
+            Geolocation technology and Citizen Science.By streamlining the
             plastic recycling process, we aim to enhance plastic waste
-            management and promote a collaborative approach to environment
-            sustainability.
+            management and promote a collaborative approach to Environmental
+            Sustainability.
           </Typography>
           <Typography
             fontWeight={700}

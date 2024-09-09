@@ -7,6 +7,7 @@ import Coverage from "../components/landingPage/dashboard/Coverage";
 import Plastics from "../components/landingPage/dashboard/Plastics";
 import Recycling from "../components/landingPage/dashboard/Recycling";
 import RecyclingRate from "../components/landingPage/dashboard/RecyclingRate";
+import Footer from "../components/landingPage/Footer";
 import Goals from "../components/landingPage/Goals";
 import Navbar from "../components/landingPage/Navbar";
 
@@ -28,13 +29,14 @@ const LandingPage = () => {
 
       <div className="text-center sm:my-5 md:mx-[20%] sm:p-5 p-3 m-3  rounded-lg shadow-lg border border-[#028C07]">
         <Typography fontWeight={700} variant="body2">
-          <span className="text-[#028C07]">The plasticonn project</span> aims to
-          bridge the gap between plastic collection initiatives and the
-          accessibility of plastic collection centers, enhancing visibility and
-          accessibility. It represents a sustainable, community-driven approach
-          to reducing improper plastic disposal, contributing to environmental
-          protection and offering environmental, economic, and social benefits,
-          ensuring a positive return on investment.
+          <span className="text-[#028C07]">The Plasticonn project</span> seeks
+          to bridge the gap between plastic collection efforts and the
+          accessibility of collection centers. By enhancing both visibility and
+          accessibility, the initiative fosters a sustainable, community-driven
+          approach to reducing improper plastic disposal. This project not only
+          contributes to environmental protection but also offers significant
+          environmental, economic, and social benefits, ensuring a positive
+          return on investment.
         </Typography>
       </div>
 
@@ -55,10 +57,14 @@ const LandingPage = () => {
       <div>
         <div className="flex justify-center my-5">
           <Typography fontWeight={700} color="#047308" variant="h5">
-            Our Goals/Aims
+            Targeted Goals
           </Typography>
         </div>
         <Goals />
+      </div>
+
+      <div>
+        <Footer />
       </div>
     </div>
   );
