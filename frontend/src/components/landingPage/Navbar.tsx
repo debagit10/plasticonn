@@ -6,44 +6,52 @@ import { RiAccountCircleLine } from "react-icons/ri";
 
 const Navbar = () => {
   const listItem = [
-    { name: "Home", link: "/" },
+    { name: "Home", link: "#" },
     { name: "About", link: "#about" },
     { name: "Team", link: "#team" },
     { name: "Contact", link: "#contact" },
     { name: "Epicollect", link: "/epicollect" },
   ];
+
   return (
-    <div className="flex justify-between md:justify-around bg-gradient-to-b from-[#D9F0DA] to-white">
-      <div className="flex">
+    <div className="flex justify-between md:justify-around bg-gradient-to-b from-[#D9F0DA] to-white fixed w-full top-0 z-50">
+      <div className="flex cursor-pointer">
         <div>
-          <img src={logo} alt="plasticonn logo" className="w-28 h-28 " />
+          <a href="#">
+            <img src={logo} alt="plasticonn logo" className="w-28 h-28 " />
+          </a>
         </div>
         <div className="hidden lg:block">
-          <Stack sx={{ marginTop: "15%" }}>
-            <Typography fontWeight={700} color="#047308" variant="h4">
-              PLASTICONN
-            </Typography>
-            <Typography
-              sx={{ fontWeight: 400, color: "black", textAlign: "center" }}
-              variant="caption"
-            >
-              collect-connect-convert
-            </Typography>
-          </Stack>
+          <a href="#">
+            <Stack sx={{ marginTop: "15%" }}>
+              <Typography fontWeight={700} color="#047308" variant="h4">
+                PLASTICONN
+              </Typography>
+              <Typography
+                sx={{ fontWeight: 400, color: "black", textAlign: "center" }}
+                variant="caption"
+              >
+                collect-connect-convert
+              </Typography>
+            </Stack>
+          </a>
         </div>
       </div>
 
       <div className="hidden sm:block">
-        <ul className="flex gap-5 md:gap-10 mt-[10%]">
+        <div className="flex gap-5 md:gap-10 mt-[10%]">
           {listItem.map((item) => (
-            <li className="relative group cursor-pointer text-[#047308]">
+            <a
+              className="relative group cursor-pointer text-[#047308]"
+              href={item.link}
+            >
               <Typography fontWeight={600} color="#047308">
                 {item.name}
               </Typography>
               <span className="absolute left-0 bottom-0 w-full h-[3px] bg-[#047308] scale-x-0 origin-left transition-transform duration-300 ease-in-out group-hover:scale-x-100 "></span>
-            </li>
+            </a>
           ))}
-        </ul>
+        </div>
       </div>
 
       <div className="mt-[2%] hidden sm:block mr-5">

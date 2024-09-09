@@ -26,7 +26,7 @@ const About = () => {
             <span className="text-[#047308]">What do people </span>have to say
             about us?
           </Typography>
-          <div className="border-[#047308] border p-5 -rotate-2 rounded-lg">
+          <div className="border-[#047308] border p-5 -rotate-2 rounded-lg mt-5">
             <Typography variant="body2">
               <ul>
                 <li> - I will like to use your data</li>

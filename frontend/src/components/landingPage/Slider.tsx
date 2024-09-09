@@ -12,7 +12,7 @@ const Slider = () => {
   };
 
   const sideList = [
-    { name: "Home", link: "/" },
+    { name: "Home", link: "#" },
     { name: "About", link: "#about" },
     { name: "Team", link: "#team" },
     { name: "Contact", link: "#contact" },
@@ -62,9 +62,12 @@ const Slider = () => {
         <div className="flex px-3 justify-start">
           <ul className="">
             {sideList.map((item) => (
-              <li className="relative group cursor-pointer text-[#047308] my-5">
+              <li
+                className="relative group cursor-pointer text-[#047308] my-5"
+                onClick={toggleDrawer(false)}
+              >
                 <Typography fontWeight={600} color="#047308">
-                  {item.name}
+                  <a href={item.link}>{item.name}</a>
                 </Typography>
                 <span className="absolute left-0 bottom-0 w-full h-[3px] bg-[#047308] scale-x-0 origin-left transition-transform duration-300 ease-in-out group-hover:scale-x-100 "></span>
               </li>

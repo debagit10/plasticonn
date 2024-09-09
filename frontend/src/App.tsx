@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+import "./App.css";
 
 const Landing = React.lazy(() => import("./pages/LandingPage"));
 const RegisterCollector = React.lazy(

@@ -24,7 +24,7 @@ const LandingPage = () => {
 
   return (
     <div>
-      <div>
+      <div className="mb-40">
         <Navbar />
       </div>
 
@@ -51,7 +51,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div className="flex justify-center ">
+      <div className="flex justify-center " id="about">
         <About />
       </div>
 
@@ -59,7 +59,7 @@ const LandingPage = () => {
         <Value />
       </div>
 
-      <div>
+      <div id="goals">
         <div className="flex justify-center my-5">
           <Typography fontWeight={700} color="#047308" variant="h5">
             Targeted Goals
@@ -68,7 +68,7 @@ const LandingPage = () => {
         <Goals />
       </div>
 
-      <div>
+      <div id="contact">
         <Footer />
       </div>
     </div>
