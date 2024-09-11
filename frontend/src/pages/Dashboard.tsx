@@ -12,9 +12,9 @@ const Dashboard = () => {
     }
   });
   return (
-    <div>
-      <Side_nav_container>Dashboard</Side_nav_container>
-    </div>
+    <Side_nav_container>
+      <div>Dashboard</div>
+    </Side_nav_container>
   );
 };
 

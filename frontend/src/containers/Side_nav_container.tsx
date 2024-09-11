@@ -18,7 +18,7 @@ const Side_nav_container: React.FC<ContainerProps> = ({ children }) => {
         <Navbar />
       </div>
 
-      <div className="mt-20">{children}</div>
+      <div className="mt-20 w-full">{children}</div>
     </div>
   );
 };
