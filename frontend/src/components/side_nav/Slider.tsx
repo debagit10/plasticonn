@@ -241,8 +241,9 @@ const Slider = () => {
               </Stack>
             )}
 
-            {sideList.map((menu) => (
+            {sideList.map((menu, index) => (
               <Stack
+                key={index}
                 direction="row"
                 spacing={1}
                 marginY="1.25rem"
