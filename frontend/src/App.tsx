@@ -1,4 +1,6 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -15,6 +17,13 @@ const DropOffs = React.lazy(() => import("./pages/DropOffs"));
 const ViewDrop = React.lazy(() => import("./pages/ViewDrop"));
 
 const App = () => {
+  const [cookies, setCookie, removeCookie] = useCookies();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!cookies.token) {
+      navigate(`/login-${cookies.role}`);
+    }
+  });
   return (
     <Suspense>
       <Routes>

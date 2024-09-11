@@ -3,6 +3,7 @@ import React from "react";
 import logo from "../../images/logo.png";
 import Slider from "./Slider";
 import { RiAccountCircleLine } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const listItem = [
@@ -12,6 +13,8 @@ const Navbar = () => {
     { name: "Contact", link: "#contact" },
     { name: "Epicollect", link: "/epicollect" },
   ];
+
+  const navigate = useNavigate();
 
   return (
     <div className="flex justify-between md:justify-around bg-gradient-to-b from-[#D9F0DA] to-white fixed w-full top-0 z-50">
@@ -71,6 +74,7 @@ const Navbar = () => {
             },
           }}
           startIcon={<RiAccountCircleLine />}
+          onClick={() => navigate("/login-collector")}
         >
           My Account
         </Button>
