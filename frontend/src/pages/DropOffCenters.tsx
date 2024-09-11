@@ -9,8 +9,8 @@ import {
   CardActionArea,
 } from "@mui/material";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
+import logo from "../images/logo.png";
+
 import CalculateDistance from "../utils/CalculateDistance";
 import { useCookies } from "react-cookie";
 import DropModal from "../modals/DropModal";
@@ -19,6 +19,15 @@ import { useNavigate } from "react-router-dom";
 
 const DropOffCenters = () => {
   const [cookies, setCookies] = useCookies();
+
+  const centerList = [
+    { name: "Drop Hub", address: "11, Odelana Street", status: true },
+    { name: "Drop Hub", address: "11, Odelana Street", status: false },
+    { name: "Drop Hub", address: "11, Odelana Street", status: true },
+    { name: "Drop Hub", address: "11, Odelana Street", status: false },
+    { name: "Drop Hub", address: "11, Odelana Street", status: true },
+    { name: "Drop Hub", address: "11, Odelana Street", status: false },
+  ];
 
   const successCallback = (position: any) => {
     const latitude = position.coords.latitude;
@@ -46,32 +55,34 @@ const DropOffCenters = () => {
 
   return (
     <Side_nav_container>
-      <div className="m-3">
+      <div className="mx-10 my-5">
+        <Typography
+          variant="h6"
+          sx={{
+            textDecoration: "underline",
+            color: "#0B490D",
+            textDecorationColor: "#0B490D",
+          }}
+        >
+          Drop Centers
+        </Typography>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="">
+          {centerList.map((center) => (
             <Card sx={{ maxWidth: 345, backgroundColor: "#D9F0DA" }}>
               <CardHeader
-                title={<Typography variant="h5">Drop off center</Typography>}
+                title={<Typography variant="h5">{center.name}</Typography>}
                 subheader={
-                  <Typography variant="caption">11, Odelana Street</Typography>
+                  <Typography variant="caption">{center.address}</Typography>
                 }
               />
-              <div className="mx-5">
-                <MapContainer
-                  center={[6.535, 3.386]}
-                  zoom={13}
-                  style={{ height: "150px", width: "100%" }}
-                >
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <Marker position={[6.535, 3.386]}>
-                    <Popup>11, Odelana Street.</Popup>
-                  </Marker>
-                </MapContainer>
+              <div className="mx-5 flex justify-center">
+                <img src={logo} className="w-44 h-44" />
               </div>
 
               <CardContent>
                 <div className="flex justify-center">
-                  <Stack direction="row" spacing={4}>
+                  <Stack direction="row" spacing={3}>
                     <div>
                       <CalculateDistance
                         myLatitude={cookies.latitude}
@@ -80,7 +91,13 @@ const DropOffCenters = () => {
                         centerLongitude={3.386}
                       />
                     </div>
-                    <Chip label="Open" />
+                    <Chip
+                      label={center.status ? "open" : "close"}
+                      sx={{
+                        backgroundColor: center.status ? "#a5d6a7" : "#ef9a9a",
+                        color: center.status ? "#2e7d32" : "#c62828",
+                      }}
+                    />
                   </Stack>
                 </div>
               </CardContent>
@@ -91,227 +108,7 @@ const DropOffCenters = () => {
                 </CardActionArea>
               </div>
             </Card>
-          </div>
-          <div className="">
-            <Card sx={{ maxWidth: 345, backgroundColor: "#D9F0DA" }}>
-              <CardHeader
-                title={<Typography variant="h5">Drop off center</Typography>}
-                subheader={
-                  <Typography variant="caption">11, Odelana Street</Typography>
-                }
-              />
-              <div className="mx-5">
-                <MapContainer
-                  center={[6.535, 3.386]}
-                  zoom={13}
-                  style={{ height: "150px", width: "100%" }}
-                >
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <Marker position={[6.535, 3.386]}>
-                    <Popup>11, Odelana Street.</Popup>
-                  </Marker>
-                </MapContainer>
-              </div>
-
-              <CardContent>
-                <div className="flex justify-center">
-                  <Stack direction="row" spacing={4}>
-                    <div>
-                      <CalculateDistance
-                        myLatitude={cookies.latitude}
-                        myLongitude={cookies.Longitude}
-                        centerLatitude={6.535}
-                        centerLongitude={3.386}
-                      />
-                    </div>
-                    <Chip label="Open" />
-                  </Stack>
-                </div>
-              </CardContent>
-
-              <div className="flex justify-center m-5">
-                <CardActionArea>
-                  <DropModal />
-                </CardActionArea>
-              </div>
-            </Card>
-          </div>
-          <div className="">
-            <Card sx={{ maxWidth: 345, backgroundColor: "#D9F0DA" }}>
-              <CardHeader
-                title={<Typography variant="h5">Drop off center</Typography>}
-                subheader={
-                  <Typography variant="caption">11, Odelana Street</Typography>
-                }
-              />
-              <div className="mx-5">
-                <MapContainer
-                  center={[6.535, 3.386]}
-                  zoom={13}
-                  style={{ height: "150px", width: "100%" }}
-                >
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <Marker position={[6.535, 3.386]}>
-                    <Popup>11, Odelana Street.</Popup>
-                  </Marker>
-                </MapContainer>
-              </div>
-
-              <CardContent>
-                <div className="flex justify-center">
-                  <Stack direction="row" spacing={4}>
-                    <div>
-                      <CalculateDistance
-                        myLatitude={cookies.latitude}
-                        myLongitude={cookies.Longitude}
-                        centerLatitude={6.535}
-                        centerLongitude={3.386}
-                      />
-                    </div>
-                    <Chip label="Open" />
-                  </Stack>
-                </div>
-              </CardContent>
-
-              <div className="flex justify-center m-5">
-                <CardActionArea>
-                  <DropModal />
-                </CardActionArea>
-              </div>
-            </Card>
-          </div>
-          <div className="">
-            <Card sx={{ maxWidth: 345, backgroundColor: "#D9F0DA" }}>
-              <CardHeader
-                title={<Typography variant="h5">Drop off center</Typography>}
-                subheader={
-                  <Typography variant="caption">11, Odelana Street</Typography>
-                }
-              />
-              <div className="mx-5">
-                <MapContainer
-                  center={[6.535, 3.386]}
-                  zoom={13}
-                  style={{ height: "150px", width: "100%" }}
-                >
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <Marker position={[6.535, 3.386]}>
-                    <Popup>11, Odelana Street.</Popup>
-                  </Marker>
-                </MapContainer>
-              </div>
-
-              <CardContent>
-                <div className="flex justify-center">
-                  <Stack direction="row" spacing={4}>
-                    <div>
-                      <CalculateDistance
-                        myLatitude={cookies.latitude}
-                        myLongitude={cookies.Longitude}
-                        centerLatitude={6.535}
-                        centerLongitude={3.386}
-                      />
-                    </div>
-                    <Chip label="Open" />
-                  </Stack>
-                </div>
-              </CardContent>
-
-              <div className="flex justify-center m-5">
-                <CardActionArea>
-                  <DropModal />
-                </CardActionArea>
-              </div>
-            </Card>
-          </div>
-          <div className="">
-            <Card sx={{ maxWidth: 345, backgroundColor: "#D9F0DA" }}>
-              <CardHeader
-                title={<Typography variant="h5">Drop off center</Typography>}
-                subheader={
-                  <Typography variant="caption">11, Odelana Street</Typography>
-                }
-              />
-              <div className="mx-5">
-                <MapContainer
-                  center={[6.535, 3.386]}
-                  zoom={13}
-                  style={{ height: "150px", width: "100%" }}
-                >
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <Marker position={[6.535, 3.386]}>
-                    <Popup>11, Odelana Street.</Popup>
-                  </Marker>
-                </MapContainer>
-              </div>
-
-              <CardContent>
-                <div className="flex justify-center">
-                  <Stack direction="row" spacing={4}>
-                    <div>
-                      <CalculateDistance
-                        myLatitude={cookies.latitude}
-                        myLongitude={cookies.Longitude}
-                        centerLatitude={6.535}
-                        centerLongitude={3.386}
-                      />
-                    </div>
-                    <Chip label="Open" />
-                  </Stack>
-                </div>
-              </CardContent>
-
-              <div className="flex justify-center m-5">
-                <CardActionArea>
-                  <DropModal />
-                </CardActionArea>
-              </div>
-            </Card>
-          </div>
-          <div className="">
-            <Card sx={{ maxWidth: 345, backgroundColor: "#D9F0DA" }}>
-              <CardHeader
-                title={<Typography variant="h5">Drop off center</Typography>}
-                subheader={
-                  <Typography variant="caption">11, Odelana Street</Typography>
-                }
-              />
-              <div className="mx-5">
-                <MapContainer
-                  center={[6.535, 3.386]}
-                  zoom={13}
-                  style={{ height: "150px", width: "100%" }}
-                >
-                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                  <Marker position={[6.535, 3.386]}>
-                    <Popup>11, Odelana Street.</Popup>
-                  </Marker>
-                </MapContainer>
-              </div>
-
-              <CardContent>
-                <div className="flex justify-center">
-                  <Stack direction="row" spacing={4}>
-                    <div>
-                      <CalculateDistance
-                        myLatitude={cookies.latitude}
-                        myLongitude={cookies.Longitude}
-                        centerLatitude={6.535}
-                        centerLongitude={3.386}
-                      />
-                    </div>
-                    <Chip label="Open" />
-                  </Stack>
-                </div>
-              </CardContent>
-
-              <div className="flex justify-center m-5">
-                <CardActionArea>
-                  <DropModal />
-                </CardActionArea>
-              </div>
-            </Card>
-          </div>
+          ))}
         </div>
       </div>
     </Side_nav_container>

@@ -33,7 +33,7 @@ const Navbar = () => {
   };
   return (
     <>
-      <div className="flex justify-around fixed md:w-[85%] w-full bg-gradient-to-b from-[#D9F0DA] to-white">
+      <div className="flex justify-around fixed md:w-[85%] w-full z-50 bg-gradient-to-b from-[#D9F0DA] to-white">
         <div className="md:hidden">
           <Slider />
         </div>
