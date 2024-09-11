@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { Button, Paper, Stack, Typography } from "@mui/material";
 import Env from "../Env";
@@ -100,7 +100,12 @@ const ViewDrop = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
+    if (!cookies.token) {
+      navigate(`/login-${cookies.role}`);
+    }
     dropDetail();
   }, []);
 

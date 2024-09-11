@@ -1,3 +1,5 @@
+import React, { useEffect } from "react";
+improt {useNavigate}
 import {
   Card,
   CardHeader,
@@ -8,15 +10,16 @@ import {
   CardActionArea,
 } from "@mui/material";
 
-import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import CalculateDistance from "../utils/CalculateDistance";
 import { useCookies } from "react-cookie";
 import DropModal from "../modals/DropModal";
 import Side_nav_container from "../containers/Side_nav_container";
+import { useNavigate } from "react-router-dom";
 
 const DropOffCenters = () => {
+  
   const [cookies, setCookies] = useCookies();
 
   const successCallback = (position: any) => {
@@ -35,6 +38,13 @@ const DropOffCenters = () => {
   } else {
     console.log("Geolocation is not supported by this browser.");
   }
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!cookies.token) {
+      navigate(`/login-${cookies.role}`);
+    }
+  });
 
   return (
     <Side_nav_container>
