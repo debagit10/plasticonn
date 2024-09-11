@@ -22,6 +22,7 @@ import { LuHistory } from "react-icons/lu";
 import { BiSupport } from "react-icons/bi";
 import { VscSignOut } from "react-icons/vsc";
 import { IoSearch } from "react-icons/io5";
+import SignOutModal from "../../modals/SignOutModal";
 
 const Slider = () => {
   const navigate = useNavigate();
@@ -270,28 +271,7 @@ const Slider = () => {
         </div>
 
         <div className="flex p-5 justify-center">
-          <Button
-            variant="outlined"
-            sx={{
-              borderColor: "#047308",
-              color: "white",
-              backgroundColor: "#047308",
-              borderRadius: "31px",
-              textTransform: "capitalize",
-
-              "&:hover": {
-                color: "#047308",
-                backgroundColor: "white",
-                borderColor: "#047308",
-              },
-            }}
-            startIcon={<VscSignOut />}
-            onClick={() => {
-              removeCookie("token");
-            }}
-          >
-            Sign out
-          </Button>
+          <SignOutModal />
         </div>
       </Drawer>
     </div>

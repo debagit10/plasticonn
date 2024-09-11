@@ -10,10 +10,10 @@ import { RxDashboard } from "react-icons/rx";
 import { ImProfile } from "react-icons/im";
 import { LuHistory } from "react-icons/lu";
 import { BiSupport } from "react-icons/bi";
-import { VscSignOut } from "react-icons/vsc";
+import SignOutModal from "../../modals/SignOutModal";
 
 const SideBar = () => {
-  const [cookies, setCookies, removeCookie] = useCookies();
+  const [cookies, setCookies] = useCookies();
 
   const navigate = useNavigate();
 
@@ -155,28 +155,7 @@ const SideBar = () => {
       </div>
 
       <div className="flex p-5">
-        <Button
-          fullWidth
-          variant="outlined"
-          sx={{
-            borderColor: "#047308",
-            color: "white",
-            backgroundColor: "#047308",
-            borderRadius: "31px",
-            textTransform: "capitalize",
-
-            "&:hover": {
-              color: "white",
-              borderColor: "#047308",
-            },
-          }}
-          startIcon={<VscSignOut />}
-          onClick={() => {
-            removeCookie("token");
-          }}
-        >
-          Sign out
-        </Button>
+        <SignOutModal />
       </div>
     </div>
   );
