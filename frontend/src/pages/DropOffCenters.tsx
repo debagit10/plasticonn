@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-improt {useNavigate}
 import {
   Card,
   CardHeader,
@@ -19,7 +18,6 @@ import Side_nav_container from "../containers/Side_nav_container";
 import { useNavigate } from "react-router-dom";
 
 const DropOffCenters = () => {
-  
   const [cookies, setCookies] = useCookies();
 
   const successCallback = (position: any) => {
