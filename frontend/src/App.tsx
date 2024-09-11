@@ -1,6 +1,4 @@
-import React, { Suspense, useEffect } from "react";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import React, { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -12,18 +10,14 @@ const RegisterCenter = React.lazy(() => import("./pages/auth/RegisterCenter"));
 const LoginCollector = React.lazy(() => import("./pages/auth/LoginCollector"));
 const LoginCenter = React.lazy(() => import("./pages/auth/LoginCenter"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
+const Profile = React.lazy(() => import("./pages/Profile"));
+const History = React.lazy(() => import("./pages/History"));
+const Support = React.lazy(() => import("./pages/Support"));
 const DropOffCenters = React.lazy(() => import("./pages/DropOffCenters"));
 const DropOffs = React.lazy(() => import("./pages/DropOffs"));
 const ViewDrop = React.lazy(() => import("./pages/ViewDrop"));
 
 const App = () => {
-  const [cookies, setCookie, removeCookie] = useCookies();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!cookies.token) {
-      navigate(`/login-${cookies.role}`);
-    }
-  });
   return (
     <Suspense>
       <Routes>
@@ -33,6 +27,9 @@ const App = () => {
         <Route path="/login-collector" Component={LoginCollector} />
         <Route path="/login-center" Component={LoginCenter} />
         <Route path="/:id/dashboard" Component={Dashboard} />
+        <Route path="/:id/profile" Component={Profile} />
+        <Route path="/:id/history" Component={History} />
+        <Route path="/support" Component={Support} />
         <Route path="/drop-off-centers" Component={DropOffCenters} />
         <Route path="/:id/dropoffs" Component={DropOffs} />
         <Route path="/dropoff/:id/view" Component={ViewDrop} />
