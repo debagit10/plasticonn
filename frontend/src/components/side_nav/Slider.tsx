@@ -20,7 +20,6 @@ import { RxDashboard } from "react-icons/rx";
 import { ImProfile } from "react-icons/im";
 import { LuHistory } from "react-icons/lu";
 import { BiSupport } from "react-icons/bi";
-import { VscSignOut } from "react-icons/vsc";
 import { IoSearch } from "react-icons/io5";
 import SignOutModal from "../../modals/SignOutModal";
 

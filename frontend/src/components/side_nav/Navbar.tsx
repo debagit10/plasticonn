@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import {
   Button,
   Typography,
@@ -9,14 +11,16 @@ import {
   Stack,
   Avatar,
   Menu,
-  MenuItem,
 } from "@mui/material";
 import logo from "../../images/logo.png";
 import { FaDropbox } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
+import { ImProfile } from "react-icons/im";
 import Slider from "./Slider";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const [cookies, setCookies, removeCookie] = useCookies();
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchText, setSearchText] = useState("");
 
@@ -31,6 +35,21 @@ const Navbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [activeMenu, setActiveMenu] = useState("");
+
+  useEffect(() => {
+    const savedActiveMenu = sessionStorage.getItem("activeMenu");
+    if (savedActiveMenu) {
+      setActiveMenu(savedActiveMenu);
+    }
+  }, []);
+
+  const handleMenuClick = (menuName: string) => {
+    setActiveMenu(menuName);
+    sessionStorage.setItem("activeMenu", menuName); // Save the active menu to localStorage
+  };
+
   return (
     <>
       <div className="flex justify-around fixed md:w-[85%] w-full z-50 bg-gradient-to-b from-[#D9F0DA] to-white">
@@ -130,9 +149,28 @@ const Navbar = () => {
                 horizontal: "right",
               }}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <div
+                onClick={() => {
+                  navigate(`/${cookies.userID}/profile`);
+                  handleClose();
+                  handleMenuClick("Profile");
+                }}
+                className="px-2 py-1 flex justify-center w-[7rem] cursor-pointer"
+              >
+                <Stack direction="row" spacing={1}>
+                  <ImProfile />
+                  <Typography>Profile</Typography>
+                </Stack>
+              </div>
 
-              <MenuItem onClick={handleClose}>Sign out</MenuItem>
+              {/* <Divider />
+
+              <div
+                onClick={handleClose}
+                className="px-2 py-1 flex justify-center"
+              >
+                <SignOutModal />
+              </div> */}
             </Menu>
           </div>
         </Stack>
