@@ -121,7 +121,7 @@ const LoginCollector: React.FC<BodyData> = () => {
 
           <div className="flex justify-center gap-4">
             <Typography variant="caption" sx={{ marginTop: ".5rem" }}>
-              drop-off centers only...
+              collectors only...
             </Typography>
             <div>
               <ToggleLogin />
