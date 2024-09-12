@@ -30,6 +30,13 @@ const Team = () => {
         </Typography>
       </div>
 
+      <div className="text-center sm:my-5 md:mx-[20%] sm:p-5 p-3 m-3  rounded-lg shadow-lg border border-[#028C07]">
+        <Typography fontWeight={700} variant="body2">
+          To achieve a sustainable future, collaboration and shared commitment
+          is key
+        </Typography>
+      </div>
+
       <div className="flex justify-center text-center">
         <Paper
           elevation={6}
