@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Env from "../../Env";
 import { useCookies } from "react-cookie";
+import { ToggleLogin } from "../../modals/ToggleLogin";
 
 const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
@@ -119,8 +120,13 @@ const Login: React.FC<BodyData> = () => {
             Login to Your Account
           </Typography>
 
-          <div className="flex justify-center">
-            <Typography variant="caption">drop-off centers only...</Typography>
+          <div className="flex justify-center gap-4">
+            <Typography variant="caption" sx={{ marginTop: ".5rem" }}>
+              drop-off centers only...
+            </Typography>
+            <div>
+              <ToggleLogin />
+            </div>
           </div>
 
           <div className="flex flex-col justify-center mt-3">
