@@ -129,7 +129,14 @@ const LoginCollector: React.FC<BodyData> = () => {
           </div>
 
           <div className="flex flex-col justify-center mt-3">
-            <Stack sx={{ marginX: "20%" }}>
+            <Stack
+              sx={{
+                marginX: {
+                  xs: "0", // No margin on small screens
+                  md: "20%", // Apply 20% margin from medium screens and above
+                },
+              }}
+            >
               <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
                 Email <span className="text-red-700">*</span>
               </Typography>
@@ -163,7 +170,14 @@ const LoginCollector: React.FC<BodyData> = () => {
               />
             </Stack>
 
-            <Stack sx={{ marginX: "20%" }}>
+            <Stack
+              sx={{
+                marginX: {
+                  xs: "0", // No margin on small screens
+                  md: "20%", // Apply 20% margin from medium screens and above
+                },
+              }}
+            >
               <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
                 Password <span className="text-red-700">*</span>
               </Typography>
@@ -202,7 +216,10 @@ const LoginCollector: React.FC<BodyData> = () => {
                 variant="contained"
                 fullWidth
                 sx={{
-                  marginX: "20%",
+                  marginX: {
+                    xs: "0", // No margin on small screens
+                    md: "20%", // Apply 20% margin from medium screens and above
+                  },
                   padding: "1rem",
                   backgroundColor: "#0B490D",
                   borderRadius: "31px",

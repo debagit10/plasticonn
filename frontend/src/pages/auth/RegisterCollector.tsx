@@ -173,7 +173,14 @@ const Register: React.FC<BodyData> = () => {
         </div>
 
         <div className="flex flex-col justify-center mt-3">
-          <Stack sx={{ marginX: "20%" }}>
+          <Stack
+            sx={{
+              marginX: {
+                xs: "0", // No margin on small screens
+                md: "20%", // Apply 20% margin from medium screens and above
+              },
+            }}
+          >
             <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
               Full Name <span className="text-red-700">*</span>
             </Typography>
@@ -206,7 +213,15 @@ const Register: React.FC<BodyData> = () => {
             />
           </Stack>
 
-          <Stack direction="row" sx={{ marginX: "20%" }}>
+          <Stack
+            direction="row"
+            sx={{
+              marginX: {
+                xs: "0", // No margin on small screens
+                md: "20%", // Apply 20% margin from medium screens and above
+              },
+            }}
+          >
             <Stack sx={{ width: "50%", marginLeft: "3%" }}>
               <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
                 Email <span className="text-red-700">*</span>
@@ -276,7 +291,15 @@ const Register: React.FC<BodyData> = () => {
             </Stack>
           </Stack>
 
-          <Stack direction="row" sx={{ marginX: "20%" }}>
+          <Stack
+            direction="row"
+            sx={{
+              marginX: {
+                xs: "0", // No margin on small screens
+                md: "20%", // Apply 20% margin from medium screens and above
+              },
+            }}
+          >
             <Stack sx={{ width: "50%", marginLeft: "3%" }}>
               <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
                 Address <span className="text-red-700">*</span>
@@ -345,7 +368,15 @@ const Register: React.FC<BodyData> = () => {
             </Stack>
           </Stack>
 
-          <Stack direction="row" sx={{ marginX: "20%" }}>
+          <Stack
+            direction="row"
+            sx={{
+              marginX: {
+                xs: "0", // No margin on small screens
+                md: "20%", // Apply 20% margin from medium screens and above
+              },
+            }}
+          >
             <Stack sx={{ width: "50%", marginLeft: "3%" }}>
               <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
                 Means of ID <span className="text-red-700">*</span>
@@ -414,7 +445,11 @@ const Register: React.FC<BodyData> = () => {
               variant="contained"
               fullWidth
               sx={{
-                marginX: "20%",
+                marginX: {
+                  xs: "0", // No margin on small screens
+                  md: "20%", // Apply 20% margin from medium screens and above
+                },
+
                 padding: "1rem",
                 backgroundColor: "#0B490D",
                 borderRadius: "31px",
