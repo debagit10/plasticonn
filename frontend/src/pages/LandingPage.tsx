@@ -53,7 +53,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div className="flex justify-center " id="about">
+      <div className="mx-5 flex justify-center" id="about">
         <About />
       </div>
 
@@ -61,12 +61,7 @@ const LandingPage = () => {
         <Value />
       </div>
 
-      <div id="goals">
-        <div className="flex justify-center my-5">
-          <Typography fontWeight={700} color="#047308" variant="h5">
-            Targeted Goals
-          </Typography>
-        </div>
+      <div className="mx-5 flex justify-center" id="goals">
         <Goals />
       </div>
 
@@ -75,6 +70,11 @@ const LandingPage = () => {
       </div>
 
       <div className="bg-[#f0f7f0] pb-3 pt-1 mx-5 rounded-lg">
+        <div className="flex justify-center mt-5">
+          <Typography variant="h5" color="#047308" fontWeight={700}>
+            Our Partners
+          </Typography>
+        </div>
         <Partners />
       </div>
 

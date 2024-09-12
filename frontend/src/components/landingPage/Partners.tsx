@@ -54,13 +54,7 @@ const Partners = () => {
   ];
 
   return (
-    <div className=" my-10  ">
-      <div className="flex justify-center">
-        <Typography variant="h5" color="#047308" fontWeight={700}>
-          Our Partners
-        </Typography>
-      </div>
-
+    <div className=" my-5  ">
       <Slider {...settings}>
         {partners.map((partner, index) => (
           <div key={index} className="px-2">
