@@ -1,9 +1,9 @@
 import { Divider, Stack, Typography } from "@mui/material";
 import React from "react";
-import audience from "../../images/audience.png";
-import value from "../../images/value.png";
-import data from "../../images/data.png";
-import different from "../../images/different.png";
+import audience from "../../images/value/audience.png";
+import value from "../../images/value/value.png";
+import data from "../../images/value/data.png";
+import different from "../../images/value/different.png";
 
 const Values = () => {
   const valueList = [

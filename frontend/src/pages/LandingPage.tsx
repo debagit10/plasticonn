@@ -10,6 +10,7 @@ import RecyclingRate from "../components/landingPage/dashboard/RecyclingRate";
 import Footer from "../components/landingPage/Footer";
 import Goals from "../components/landingPage/Goals";
 import Navbar from "../components/landingPage/Navbar";
+import Partners from "../components/landingPage/Partners";
 import Team from "../components/landingPage/Team";
 import Value from "../components/landingPage/Values";
 
@@ -69,8 +70,12 @@ const LandingPage = () => {
         <Goals />
       </div>
 
-      <div className="mt-10">
+      <div className="mt-10" id="team">
         <Team />
+      </div>
+
+      <div className="bg-[#f0f7f0] pb-3 pt-1 mx-5 rounded-lg">
+        <Partners />
       </div>
 
       <div id="contact">
