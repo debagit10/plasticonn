@@ -13,7 +13,7 @@ const Team = () => {
   const teamMembers = [
     { name: "ODULANA OLUWATOYIN", title: "Coach", picture: coach },
     { name: "ONAFESO IMISIOLUWA", title: "Team Lead", picture: lead },
-    { name: "AZEEZ MOYOSORE", title: "Presenter", picture: presenter },
+    { name: "AZEEZ MOYOSORE", title: "Researcher", picture: presenter },
     {
       name: "FATIMILEHIN OLUWATOBILOBA",
       title: "Social Manager",
