@@ -16,7 +16,7 @@ const Team = () => {
     { name: "AZEEZ MOYOSORE", title: "Researcher", picture: presenter },
     {
       name: "FATIMILEHIN OLUWATOBILOBA",
-      title: "Social Manager",
+      title: "Social Media Manager",
       picture: social,
     },
     { name: "ONASANYA OLUWADEMILADE", title: "GIS Analyst", picture: analyst },

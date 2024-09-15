@@ -48,7 +48,7 @@ const Footer = () => {
           <div className="flex justify-center mt-5">
             <Stack direction="row" spacing={1}>
               <FaLocationDot />
-              <Typography>University of lagos, Akoka, Nigeria</Typography>
+              <Typography>University of Lagos, Akoka, Nigeria</Typography>
             </Stack>
           </div>
 
