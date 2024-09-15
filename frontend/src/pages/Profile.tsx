@@ -28,7 +28,7 @@ const Profile = () => {
 
   return (
     <Side_nav_container>
-      <div className="mx-10">
+      <div className="mx-10 my-5">
         <Typography
           variant="h6"
           sx={{
