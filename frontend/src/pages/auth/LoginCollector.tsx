@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  InputAdornment,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
@@ -7,6 +14,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Env from "../../Env";
 import { useCookies } from "react-cookie";
 import { ToggleLogin } from "../../modals/ToggleLogin";
+import { IoEyeOutline } from "react-icons/io5";
+import { IoEyeOffOutline } from "react-icons/io5";
 
 const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
@@ -36,6 +45,7 @@ const LoginCollector: React.FC<BodyData> = () => {
   });
   const [loading, setLoading] = useState(false);
   const [cookies, setCookies] = useCookies();
+  const [seePassword, setSeePassword] = useState(false);
 
   const isFormDataComplete = () => {
     return Object.values(formData).every((value) => value.trim() !== "");
@@ -185,7 +195,7 @@ const LoginCollector: React.FC<BodyData> = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                type="password"
+                type={seePassword ? "text" : "password"}
                 placeholder="Enter your password"
                 variant="outlined"
                 sx={{
@@ -207,6 +217,34 @@ const LoginCollector: React.FC<BodyData> = () => {
                   "& input": {
                     padding: "1rem", // Adding padding inside the input
                   },
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment
+                      position="end"
+                      sx={{
+                        padding: "0.5rem",
+                      }}
+                    >
+                      <IconButton>
+                        {seePassword ? (
+                          <IoEyeOffOutline
+                            style={{
+                              fontSize: "1.5rem",
+                            }}
+                            onClick={() => setSeePassword(false)}
+                          />
+                        ) : (
+                          <IoEyeOutline
+                            style={{
+                              fontSize: "1.5rem",
+                            }}
+                            onClick={() => setSeePassword(true)}
+                          />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
               />
             </Stack>
