@@ -160,6 +160,7 @@ const Register: React.FC<BodyData> = () => {
         <Typography
           variant="h4"
           sx={{
+            fontWeight: 700,
             textAlign: "center",
             fontSize: {
               xs: "1rem", // 16px
