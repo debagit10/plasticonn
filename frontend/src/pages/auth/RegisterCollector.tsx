@@ -111,8 +111,9 @@ const Register: React.FC<BodyData> = () => {
     try {
       setLoading(true);
       const form = isFormDataComplete();
-      console.log(form);
+
       if (!form) {
+        setLoading(false);
         toast.warning("Please fill all fields", {
           position: "top-center",
         });
