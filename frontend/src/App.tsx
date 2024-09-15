@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import logo from "./images/logo.png";
 
 const Landing = React.lazy(() => import("./pages/LandingPage"));
 const RegisterCollector = React.lazy(
@@ -19,7 +20,17 @@ const ViewDrop = React.lazy(() => import("./pages/ViewDrop"));
 
 const App = () => {
   return (
-    <Suspense>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center mt-[70%]">
+          <img
+            src={logo}
+            alt="Logo"
+            className="w-24 h-24 animate-scale opacity-50"
+          />
+        </div>
+      }
+    >
       <Routes>
         <Route path="/" Component={Landing} />
         <Route path="/register-collector" Component={RegisterCollector} />
