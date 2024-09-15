@@ -3,9 +3,11 @@ import { Button, Drawer, Icon, Typography } from "@mui/material";
 import { RiMenuUnfold4Line } from "react-icons/ri";
 import { RiMenuUnfold3Line } from "react-icons/ri";
 import { RiAccountCircleLine } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 
 const Slider = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDrawer = (newOpen: boolean) => () => {
     setOpen(newOpen);
@@ -93,6 +95,7 @@ const Slider = () => {
               },
             }}
             startIcon={<RiAccountCircleLine />}
+            onClick={() => navigate("/login-collector")}
           >
             My Account
           </Button>
