@@ -71,11 +71,6 @@ const AuthContainer: React.FC<ContainerProps> = ({ children }) => {
             src={logo}
             className="absolute bottom-20 left-4 opacity-15 w-32 h-32"
           />
-
-          <img
-            src={logo}
-            className="absolute bottom-4 right-4 opacity-15 w-32 h-32"
-          />
         </div>
         <div className="flex justify-center mt-10">{children}</div>
       </div>
