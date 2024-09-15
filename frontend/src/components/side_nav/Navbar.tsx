@@ -162,15 +162,6 @@ const Navbar = () => {
                   <Typography>Profile</Typography>
                 </Stack>
               </div>
-
-              {/* <Divider />
-
-              <div
-                onClick={handleClose}
-                className="px-2 py-1 flex justify-center"
-              >
-                <SignOutModal />
-              </div> */}
             </Menu>
           </div>
         </Stack>
