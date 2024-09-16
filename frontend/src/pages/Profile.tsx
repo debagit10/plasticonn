@@ -6,26 +6,66 @@ import Side_nav_container from "../containers/Side_nav_container";
 import logo from "../images/logo.png";
 import EditProfileModal from "../modals/EditProfileModal";
 import DeleteAccountModal from "../modals/DeleteAccountModal";
+import Env from "../Env";
+import axios from "axios";
+const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const Profile = () => {
   const [cookies, setCookies] = useCookies();
-  const [formData, setFormData] = useState({
-    fullName: "John Doe",
-    name: "Drop off Hub",
-    phone: "08034010411",
-    email: "johndoe@gmail.com",
-    address: "11, Odelana street",
-    password: "12345",
-    collectorID: "1A2S3D",
-    centerID: "1B2T3E",
+  const [userData, setUserData] = useState({
+    fullName: "",
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
+    collectorID: "",
+    centerID: "",
   });
 
   const navigate = useNavigate();
+
+  let apiUrl: string;
+
+  if (CLIENT_ENV == "prod") {
+    apiUrl = BASE_PROD_API_URL;
+  } else if (CLIENT_ENV == "dev") {
+    apiUrl = BASE_DEV_API_URL;
+  }
+
+  const getUserData = async () => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${cookies.token}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/${cookies.role}/userData`,
+        config
+      );
+
+      setUserData((prevState) => ({
+        ...prevState,
+        fullName: response.data.fullName || "",
+        name: response.data.name || "",
+        phone: response.data.phone || "",
+        email: response.data.email || "",
+        address: response.data.address || "",
+        collectorID: response.data.collectorID || "",
+        centerID: response.data.centerID || "",
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (!cookies.token) {
       navigate(`/login-${cookies.role}`);
     }
-  });
+    getUserData();
+  }, []);
 
   return (
     <Side_nav_container>
@@ -87,7 +127,7 @@ const Profile = () => {
                         },
                       },
                     }}
-                    value={formData.fullName}
+                    value={userData.fullName}
                   />
                 </Stack>
               </div>
@@ -109,7 +149,7 @@ const Profile = () => {
                         },
                       },
                     }}
-                    value={formData.phone}
+                    value={userData.phone}
                   />
                 </Stack>
               </div>
@@ -131,7 +171,7 @@ const Profile = () => {
                         },
                       },
                     }}
-                    value={formData.email}
+                    value={userData.email}
                   />
                 </Stack>
               </div>
@@ -153,30 +193,7 @@ const Profile = () => {
                         },
                       },
                     }}
-                    value={formData.address}
-                  />
-                </Stack>
-              </div>
-
-              <div>
-                <Stack direction="row" spacing={2}>
-                  <Typography width="5rem">Password:</Typography>
-                  <TextField
-                    sx={{
-                      "& label.Mui-focused": {
-                        color: "green", // Change label color when focused
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "green", // Change border color
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "green", // Change border color when focused
-                        },
-                      },
-                    }}
-                    value={formData.password}
-                    type="password"
+                    value={userData.address}
                   />
                 </Stack>
               </div>
@@ -204,8 +221,8 @@ const Profile = () => {
                     }}
                     value={
                       cookies.role === "collector"
-                        ? formData.collectorID
-                        : formData.centerID
+                        ? userData.collectorID
+                        : userData.centerID
                     }
                   />
                 </Stack>

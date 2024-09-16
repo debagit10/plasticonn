@@ -79,7 +79,7 @@ const Login: React.FC<BodyData> = () => {
         formData,
         config
       );
-      console.log(response);
+
       if (response.data.success) {
         const userID = response.data.userID;
         toast.success(response.data.success, {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import {
   Button,
@@ -13,24 +13,29 @@ import {
   Typography,
 } from "@mui/material";
 import { CiEdit } from "react-icons/ci";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Env from "../Env";
+import axios from "axios";
+const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const EditProfileModal = () => {
   const [open, setOpen] = useState(false);
   const [cookies, setCookies] = useCookies();
   const [loading, setLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
-    fullName: "John Doe",
-    name: "Drop off Hub",
-    phone: "08034010411",
-    email: "johndoe@gmail.com",
-    address: "11, Odelana street",
+  const [userData, setUserData] = useState({
+    fullName: "",
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
     pic: "",
   });
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData((prevdata) => ({
+    setUserData((prevdata) => ({
       ...prevdata,
       [name]: value,
     }));
@@ -44,8 +49,79 @@ const EditProfileModal = () => {
     setOpen(false);
   };
 
+  let apiUrl: string;
+
+  if (CLIENT_ENV == "prod") {
+    apiUrl = BASE_PROD_API_URL;
+  } else if (CLIENT_ENV == "dev") {
+    apiUrl = BASE_DEV_API_URL;
+  }
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${cookies.token}`,
+    },
+  };
+
+  const isFormDataComplete = () => {
+    return Object.values(userData).every((value) => value.trim() !== "");
+  };
+
+  const editProfile = async () => {
+    try {
+      setLoading(true);
+
+      const response = await axios.patch(
+        `${apiUrl}/api/${cookies.role}/update`,
+        userData,
+        config
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.success, {
+          position: "top-center",
+          autoClose: 1500,
+          onClose: () => {
+            handleClose();
+          },
+        });
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getUserData = async () => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/${cookies.role}/userData`,
+        config
+      );
+
+      setUserData((prevState) => ({
+        ...prevState,
+        fullName: response.data.fullName || "",
+        name: response.data.name || "",
+        phone: response.data.phone || "",
+        email: response.data.email || "",
+        address: response.data.address || "",
+        collectorID: response.data.collectorID || "",
+        centerID: response.data.centerID || "",
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   return (
     <div>
+      <ToastContainer />
       <Button
         variant="contained"
         sx={{
@@ -91,7 +167,7 @@ const EditProfileModal = () => {
                             },
                           },
                         }}
-                        value={formData.fullName}
+                        value={userData.fullName}
                         name={
                           cookies.role === "collector" ? "fullName" : "name"
                         }
@@ -116,7 +192,7 @@ const EditProfileModal = () => {
                             },
                           },
                         }}
-                        value={formData.phone}
+                        value={userData.phone}
                         name="phone"
                         onChange={handleChange}
                       />
@@ -139,7 +215,7 @@ const EditProfileModal = () => {
                             },
                           },
                         }}
-                        value={formData.email}
+                        value={userData.email}
                         name="email"
                         onChange={handleChange}
                       />
@@ -162,7 +238,7 @@ const EditProfileModal = () => {
                             },
                           },
                         }}
-                        value={formData.address}
+                        value={userData.address}
                         name="address"
                         onChange={handleChange}
                       />
@@ -202,7 +278,7 @@ const EditProfileModal = () => {
               },
             }}
             disabled={loading}
-            //onClick={submit}
+            onClick={editProfile}
           >
             {loading ? "Updating..." : "Update"}
           </Button>
