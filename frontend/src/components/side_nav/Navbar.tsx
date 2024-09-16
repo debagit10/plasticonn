@@ -17,12 +17,26 @@ import { FaDropbox } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { ImProfile } from "react-icons/im";
 import Slider from "./Slider";
+import axios from "axios";
+import Env from "../../Env";
+const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [cookies, setCookies, removeCookie] = useCookies();
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchText, setSearchText] = useState("");
+  const [activeMenu, setActiveMenu] = useState("");
+  const [userData, setUserData] = useState({
+    fullName: "",
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
+    collectorID: "",
+    centerID: "",
+    pic: "",
+  });
 
   const handleInputChange = (e: any) => {
     setSearchText(e.target.value);
@@ -36,19 +50,55 @@ const Navbar = () => {
     setAnchorEl(null);
   };
 
-  const [activeMenu, setActiveMenu] = useState("");
+  const handleMenuClick = (menuName: string) => {
+    setActiveMenu(menuName);
+    sessionStorage.setItem("activeMenu", menuName); // Save the active menu to localStorage
+  };
+
+  let apiUrl: string;
+
+  if (CLIENT_ENV == "prod") {
+    apiUrl = BASE_PROD_API_URL;
+  } else if (CLIENT_ENV == "dev") {
+    apiUrl = BASE_DEV_API_URL;
+  }
+
+  const getUserData = async () => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${cookies.token}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/${cookies.role}/userData`,
+        config
+      );
+
+      setUserData((prevState) => ({
+        ...prevState,
+        fullName: response.data.fullName || "",
+        name: response.data.name || "",
+        phone: response.data.phone || "",
+        email: response.data.email || "",
+        address: response.data.address || "",
+        collectorID: response.data.collectorID || "",
+        centerID: response.data.centerID || "",
+        pic: response.data.pic || "",
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
+    getUserData();
     const savedActiveMenu = sessionStorage.getItem("activeMenu");
     if (savedActiveMenu) {
       setActiveMenu(savedActiveMenu);
     }
   }, []);
-
-  const handleMenuClick = (menuName: string) => {
-    setActiveMenu(menuName);
-    sessionStorage.setItem("activeMenu", menuName); // Save the active menu to localStorage
-  };
 
   return (
     <>
@@ -134,7 +184,7 @@ const Navbar = () => {
 
           <div>
             <IconButton onClick={handleClick}>
-              <Avatar alt="User Avatar" src={logo} />
+              <Avatar alt="User Avatar" src={userData.pic} />
             </IconButton>
             <Menu
               anchorEl={anchorEl}

@@ -3,7 +3,6 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Stack, TextField, Typography } from "@mui/material";
 import Side_nav_container from "../containers/Side_nav_container";
-import logo from "../images/logo.png";
 import EditProfileModal from "../modals/EditProfileModal";
 import DeleteAccountModal from "../modals/DeleteAccountModal";
 import Env from "../Env";
@@ -20,6 +19,7 @@ const Profile = () => {
     address: "",
     collectorID: "",
     centerID: "",
+    pic: "",
   });
 
   const navigate = useNavigate();
@@ -54,6 +54,7 @@ const Profile = () => {
         address: response.data.address || "",
         collectorID: response.data.collectorID || "",
         centerID: response.data.centerID || "",
+        pic: response.data.pic || "",
       }));
     } catch (error) {
       console.log(error);
@@ -84,11 +85,15 @@ const Profile = () => {
         <div className="flex flex-col md:flex-row justify-center md:gap-[8rem] gap-[3rem] mt-10">
           <div>
             <div className="flex justify-center">
-              <img src={logo} className="w-36 h-36" />
+              <img src={userData.pic} className="w-36 h-36" />
             </div>
 
             <div className="flex justify-center">
-              <Typography variant="h4">John Doe</Typography>
+              <Typography variant="h4">
+                {cookies.role === "collector"
+                  ? userData.fullName
+                  : userData.name}
+              </Typography>
             </div>
             <div className="flex justify-center">
               <Typography variant="caption">
