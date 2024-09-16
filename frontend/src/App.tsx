@@ -34,9 +34,9 @@ const App = () => {
       <Routes>
         <Route path="/" Component={Landing} />
         <Route path="/register-collector" Component={RegisterCollector} />
-        <Route path="/register-center" Component={RegisterCenter} />
+        <Route path="/register-dropOffCenter" Component={RegisterCenter} />
         <Route path="/login-collector" Component={LoginCollector} />
-        <Route path="/login-center" Component={LoginCenter} />
+        <Route path="/login-dropOffCenter" Component={LoginCenter} />
         <Route path="/:id/dashboard" Component={Dashboard} />
         <Route path="/:id/profile" Component={Profile} />
         <Route path="/:id/history" Component={History} />

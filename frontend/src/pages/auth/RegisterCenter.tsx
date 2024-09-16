@@ -101,7 +101,7 @@ const RegisterCenter: React.FC<BodyData> = () => {
         });
         setLoading(false);
         setCookies("token", response.data.token.encryptedToken);
-        setCookies("role", "center");
+        setCookies("role", "dropOffCenter");
       }
     } catch (error: any) {
       setLoading(false);

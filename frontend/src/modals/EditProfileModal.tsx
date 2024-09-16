@@ -12,6 +12,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { CiEdit } from "react-icons/ci";
 
 const EditProfileModal = () => {
   const [open, setOpen] = useState(false);
@@ -56,6 +57,7 @@ const EditProfileModal = () => {
           },
         }}
         onClick={handleClickOpen}
+        startIcon={<CiEdit />}
       >
         Edit profile
       </Button>

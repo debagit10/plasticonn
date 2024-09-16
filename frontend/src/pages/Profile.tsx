@@ -5,6 +5,7 @@ import { Stack, TextField, Typography } from "@mui/material";
 import Side_nav_container from "../containers/Side_nav_container";
 import logo from "../images/logo.png";
 import EditProfileModal from "../modals/EditProfileModal";
+import DeleteAccountModal from "../modals/DeleteAccountModal";
 
 const Profile = () => {
   const [cookies, setCookies] = useCookies();
@@ -58,6 +59,9 @@ const Profile = () => {
             </div>
             <div className="flex justify-center md:mt-5 mt-2">
               <EditProfileModal />
+            </div>
+            <div className="flex justify-center md:mt-5 mt-2">
+              <DeleteAccountModal />
             </div>
           </div>
 
