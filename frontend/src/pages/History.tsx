@@ -85,53 +85,66 @@ const History = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {history.map((row, index) => (
-                <TableRow
-                  key={index}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  className="cursor-pointer"
-                >
-                  <TableCell
-                    onClick={() => navigate(`/dropoff/${row._id}/view`)}
+              {history
+                .filter((item) => {
+                  const now = new Date();
+                  const itemDate = new Date(item.createdAt);
+                  const diffInHours =
+                    (now.getTime() - itemDate.getTime()) / (1000 * 60 * 60);
+                  return diffInHours <= 24; // Keep only items within the last 24 hours
+                })
+                .sort(
+                  (a: any, b: any) =>
+                    new Date(b.createdAt).getTime() -
+                    new Date(a.createdAt).getTime()
+                )
+                .map((row, index) => (
+                  <TableRow
+                    key={index}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    className="cursor-pointer"
                   >
-                    {cookies.role === "collector"
-                      ? row.centerID
-                      : row.collectorID}
-                  </TableCell>
-                  <TableCell
-                    onClick={() => navigate(`/dropoff/${row._id}/view`)}
-                  >
-                    <DayAndTime date={row.createdAt} />
-                  </TableCell>
-                  <TableCell
-                    onClick={() => navigate(`/dropoff/${row._id}/view`)}
-                  >
-                    <Chip
-                      label={
-                        row.accepted === "pending.."
-                          ? "Pending"
-                          : row.accepted === "true"
-                          ? "Accepted"
-                          : "Rejected"
-                      }
-                      sx={{
-                        backgroundColor:
+                    <TableCell
+                      onClick={() => navigate(`/dropoff/${row._id}/view`)}
+                    >
+                      {cookies.role === "collector"
+                        ? row.centerID
+                        : row.collectorID}
+                    </TableCell>
+                    <TableCell
+                      onClick={() => navigate(`/dropoff/${row._id}/view`)}
+                    >
+                      <DayAndTime date={row.createdAt} />
+                    </TableCell>
+                    <TableCell
+                      onClick={() => navigate(`/dropoff/${row._id}/view`)}
+                    >
+                      <Chip
+                        label={
                           row.accepted === "pending.."
-                            ? "#bdbdbd" // Grey for pending
+                            ? "Pending"
                             : row.accepted === "true"
-                            ? "#a5d6a7" // Green for accepted
-                            : "#ef9a9a", // Red for rejected
-                        color:
-                          row.accepted === "pending.."
-                            ? "#616161" // Darker grey for text when pending
-                            : row.accepted === "true"
-                            ? "#2e7d32" // Dark green for accepted
-                            : "#c62828", // Dark red for rejected
-                      }}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))}
+                            ? "Accepted"
+                            : "Rejected"
+                        }
+                        sx={{
+                          backgroundColor:
+                            row.accepted === "pending.."
+                              ? "#bdbdbd" // Grey for pending
+                              : row.accepted === "true"
+                              ? "#a5d6a7" // Green for accepted
+                              : "#ef9a9a", // Red for rejected
+                          color:
+                            row.accepted === "pending.."
+                              ? "#616161" // Darker grey for text when pending
+                              : row.accepted === "true"
+                              ? "#2e7d32" // Dark green for accepted
+                              : "#c62828", // Dark red for rejected
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>

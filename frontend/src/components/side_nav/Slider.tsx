@@ -22,11 +22,15 @@ import { LuHistory } from "react-icons/lu";
 import { BiSupport } from "react-icons/bi";
 import { IoSearch } from "react-icons/io5";
 import SignOutModal from "../../modals/SignOutModal";
+import axios from "axios";
+import Env from "../../Env";
+const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const Slider = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [cookies, setCookies, removeCookie] = useCookies();
+  const [activeMenu, setActiveMenu] = useState("");
   const [searchText, setSearchText] = useState("");
 
   const handleInputChange = (e: any) => {
@@ -60,7 +64,33 @@ const Slider = () => {
     },
   ];
 
-  const [activeMenu, setActiveMenu] = useState("");
+  let apiUrl: string;
+
+  if (CLIENT_ENV == "prod") {
+    apiUrl = BASE_PROD_API_URL;
+  } else if (CLIENT_ENV == "dev") {
+    apiUrl = BASE_DEV_API_URL;
+  }
+
+  const getUserData = async () => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${cookies.token}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/${cookies.role}/userData`,
+        config
+      );
+      console.log(response.data);
+
+      setCookies("userID", response.data._id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const savedActiveMenu = sessionStorage.getItem("activeMenu");
