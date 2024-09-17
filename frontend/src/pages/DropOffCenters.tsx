@@ -24,15 +24,6 @@ const DropOffCenters = () => {
   const [cookies, setCookies] = useCookies();
   const [dropOffCenter, setDropOffCenter] = useState([]);
 
-  const centerList = [
-    { name: "Drop Hub", address: "11, Odelana Street", status: true },
-    { name: "Drop Hub", address: "11, Odelana Street", status: false },
-    { name: "Drop Hub", address: "11, Odelana Street", status: true },
-    { name: "Drop Hub", address: "11, Odelana Street", status: false },
-    { name: "Drop Hub", address: "11, Odelana Street", status: true },
-    { name: "Drop Hub", address: "11, Odelana Street", status: false },
-  ];
-
   let apiUrl: string;
 
   if (CLIENT_ENV == "prod") {
