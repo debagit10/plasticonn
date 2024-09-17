@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -33,17 +33,27 @@ interface FormData {
   location: number[];
 }
 
-const DropModal = ({ status }) => {
+const DropModal = ({ status, centerID }) => {
   const [cookies, setCookies] = useCookies();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [userData, setUserData] = useState({
+    fullName: "",
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
+    collectorID: "",
+    pic: "",
+  });
 
   const [formData, setFormData] = useState<FormData>({
     type: [],
     condition: "",
     amount: 0,
-    collectorID: "",
-    centerID: "",
+    collectorID: userData.collectorID,
+    centerID: centerID,
     location: [],
   });
 
@@ -94,6 +104,35 @@ const DropModal = ({ status }) => {
     apiUrl = BASE_DEV_API_URL;
   }
 
+  const getUserData = async () => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${cookies.token}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        `${apiUrl}/api/${cookies.role}/userData`,
+        config
+      );
+      console.log(response.data);
+
+      setUserData((prevState) => ({
+        ...prevState,
+        fullName: response.data.fullName || "",
+        name: response.data.name || "",
+        phone: response.data.phone || "",
+        email: response.data.email || "",
+        address: response.data.address || "",
+        collectorID: response.data.collectorID || "",
+        pic: response.data.pic || "",
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const submit = async () => {
     formData.location.push(cookies.Longitude);
     formData.location.push(cookies.latitude);
@@ -126,8 +165,8 @@ const DropModal = ({ status }) => {
           type: [],
           condition: "",
           amount: 0,
-          collectorID: "",
-          centerID: "",
+          collectorID: userData.collectorID,
+          centerID: centerID,
           location: [],
         });
       }
@@ -141,13 +180,17 @@ const DropModal = ({ status }) => {
           type: [],
           condition: "",
           amount: 0,
-          collectorID: "",
-          centerID: "",
+          collectorID: userData.collectorID,
+          centerID: centerID,
           location: [],
         });
       }
     }
   };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   return (
     <div>
@@ -207,7 +250,6 @@ const DropModal = ({ status }) => {
                     variant="outlined"
                     name="centerID"
                     value={formData.centerID}
-                    onChange={handleChange}
                     sx={{
                       "& label.Mui-focused": {
                         color: "green", // Change label color when focused
