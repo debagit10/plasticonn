@@ -31,6 +31,7 @@ interface BodyData {
   email?: string;
   operatingHours?: string;
   password?: string;
+  pic?: string;
 }
 
 const RegisterCenter: React.FC<BodyData> = () => {
@@ -52,10 +53,14 @@ const RegisterCenter: React.FC<BodyData> = () => {
     password: "",
     person: "",
     operatingHours: "",
+    pic: "",
   });
+
   const [loading, setLoading] = useState(false);
   const [cookies, setCookies] = useCookies();
   const [seePassword, setSeePassword] = useState(false);
+  const [picUrl, setPicUrl] = useState<string>("");
+  const [fileUrl, setFileUrl] = useState("");
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -69,10 +74,43 @@ const RegisterCenter: React.FC<BodyData> = () => {
     return Object.values(formData).every((value) => value.trim() !== "");
   };
 
+  const uploadPicture = async (event: any) => {
+    const pic = event.target.files[0]; // Get the first file from the input
+    const data = new FormData();
+    data.append("image", pic);
+    try {
+      const response = await axios.post(`${apiUrl}/api/upload/pics`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log(response.data);
+      setPicUrl(response.data.imageUrl);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const uploadFile = async (event: any) => {
+    const file = event.target.files[0];
+    const data = new FormData();
+    data.append("file", file);
+    try {
+      const response = await axios.post(`${apiUrl}/api/upload/file`, data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      console.log(response.data);
+      setFileUrl(response.data.fileUrl);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const submit = async () => {
+    formData.pic = picUrl;
+    formData.person = fileUrl;
     const config = { headers: { "Content-type": "application/json" } };
 
     try {
+      console.log(formData);
       setLoading(true);
       const form = isFormDataComplete();
 
@@ -152,6 +190,7 @@ const RegisterCenter: React.FC<BodyData> = () => {
 
           <div className="flex flex-col justify-center mt-3">
             <Stack
+              direction="row"
               sx={{
                 marginX: {
                   xs: "0", // No margin on small screens
@@ -159,36 +198,69 @@ const RegisterCenter: React.FC<BodyData> = () => {
                 },
               }}
             >
-              <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
-                Center Name <span className="text-red-700">*</span>
-              </Typography>
-              <TextField
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Enter center's name"
-                variant="outlined"
-                sx={{
-                  padding: "1rem", // Equivalent to p-4
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "black", // Equivalent to border-black
-                      borderWidth: "2px",
-                      borderRadius: "31px", // Equivalent to border-2
+              <Stack sx={{ width: "50%", marginLeft: "3%" }}>
+                <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
+                  Center Name <span className="text-red-700">*</span>
+                </Typography>
+                <TextField
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="Enter center's name"
+                  variant="outlined"
+                  sx={{
+                    padding: "1rem", // Equivalent to p-4
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "black", // Equivalent to border-black
+                        borderWidth: "2px",
+                        borderRadius: "31px", // Equivalent to border-2
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "black",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#0B490D", // Equivalent to focus:border-[#0B490D]
+                      },
+                      padding: 0, // Reset default padding
                     },
-                    "&:hover fieldset": {
-                      borderColor: "black",
+                    "& input": {
+                      padding: "1rem", // Adding padding inside the input
                     },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#0B490D", // Equivalent to focus:border-[#0B490D]
+                  }}
+                />
+              </Stack>
+
+              <Stack sx={{ width: "50%" }}>
+                <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
+                  Person contact <span className="text-red-700">*</span>
+                </Typography>
+                <TextField
+                  onChange={uploadFile}
+                  type="file"
+                  variant="outlined"
+                  sx={{
+                    paddingY: "1rem", // Equivalent to p-4
+                    "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "black", // Equivalent to border-black
+                        borderWidth: "2px",
+                        borderRadius: "31px", // Equivalent to border-2
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "black",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#0B490D", // Equivalent to focus:border-[#0B490D]
+                      },
+                      padding: 0, // Reset default padding
                     },
-                    padding: 0, // Reset default padding
-                  },
-                  "& input": {
-                    padding: "1rem", // Adding padding inside the input
-                  },
-                }}
-              />
+                    "& input": {
+                      padding: "1rem", // Adding padding inside the input
+                    },
+                  }}
+                />
+              </Stack>
             </Stack>
 
             <Stack
@@ -383,18 +455,16 @@ const RegisterCenter: React.FC<BodyData> = () => {
                 },
               }}
             >
-              <Stack sx={{ width: "50%", marginLeft: "3%" }}>
+              <Stack sx={{ width: "50%" }}>
                 <Typography sx={{ marginLeft: "3%", fontWeight: 700 }}>
-                  Person contact <span className="text-red-700">*</span>
+                  Center Picture <span className="text-red-700">*</span>
                 </Typography>
                 <TextField
-                  name="person"
-                  value={formData.person}
-                  onChange={handleInputChange}
-                  placeholder="phone number or email"
+                  onChange={uploadPicture}
+                  type="file"
                   variant="outlined"
                   sx={{
-                    paddingY: "1rem", // Equivalent to p-4
+                    padding: "1rem", // Equivalent to p-4
                     "& .MuiOutlinedInput-root": {
                       "& fieldset": {
                         borderColor: "black", // Equivalent to border-black

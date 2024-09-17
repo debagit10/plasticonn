@@ -280,7 +280,7 @@ const Login: React.FC<BodyData> = () => {
                 Don't have an account?{" "}
                 <span
                   className="underline cursor-pointer"
-                  onClick={() => navigate("/register-center")}
+                  onClick={() => navigate("/register-dropOffCenter")}
                 >
                   Sign up
                 </span>

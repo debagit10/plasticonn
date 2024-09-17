@@ -167,7 +167,11 @@ const EditProfileModal = () => {
                             },
                           },
                         }}
-                        value={userData.fullName}
+                        value={
+                          cookies.role === "collector"
+                            ? userData.fullName
+                            : userData.name
+                        }
                         name={
                           cookies.role === "collector" ? "fullName" : "name"
                         }

@@ -44,6 +44,7 @@ const Profile = () => {
         `${apiUrl}/api/${cookies.role}/userData`,
         config
       );
+      console.log(response.data);
 
       setUserData((prevState) => ({
         ...prevState,
@@ -132,7 +133,11 @@ const Profile = () => {
                         },
                       },
                     }}
-                    value={userData.fullName}
+                    value={
+                      cookies.role === "collector"
+                        ? userData.fullName
+                        : userData.name
+                    }
                   />
                 </Stack>
               </div>

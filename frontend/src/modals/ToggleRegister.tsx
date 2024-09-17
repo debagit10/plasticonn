@@ -44,7 +44,7 @@ const ToggleRegister = () => {
         <MenuItem
           onClick={() => {
             handleClose();
-            navigate("/register-center");
+            navigate("/register-dropOffCenter");
           }}
         >
           Drop off center
