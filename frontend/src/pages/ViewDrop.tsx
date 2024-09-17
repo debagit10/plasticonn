@@ -53,7 +53,7 @@ const ViewDrop = () => {
   };
 
   const acceptDrop = async () => {
-    const status = true;
+    const status = "true";
     const dropID = detail?._id;
 
     const data = { status, dropID };
@@ -77,7 +77,7 @@ const ViewDrop = () => {
   };
 
   const rejectDrop = async () => {
-    const status = false;
+    const status = "false";
     const dropID = detail?._id;
 
     const data = { status, dropID };
