@@ -21,6 +21,7 @@ import Env from "../Env";
 import { useCookies } from "react-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import OperatingHours from "../utils/OperatingHours";
 
 const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
@@ -33,7 +34,7 @@ interface FormData {
   location: number[];
 }
 
-const DropModal = ({ status, centerID }) => {
+const DropModal = ({ hours, centerID }) => {
   const [cookies, setCookies] = useCookies();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -56,6 +57,10 @@ const DropModal = ({ status, centerID }) => {
     centerID: centerID,
     location: [],
   });
+
+  const isFormDataComplete = () => {
+    return Object.values(formData).every((value) => value.trim() !== "" || []);
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -116,7 +121,6 @@ const DropModal = ({ status, centerID }) => {
         `${apiUrl}/api/${cookies.role}/userData`,
         config
       );
-      console.log(response.data);
 
       setUserData((prevState) => ({
         ...prevState,
@@ -146,6 +150,16 @@ const DropModal = ({ status, centerID }) => {
 
     try {
       setLoading(true);
+      const form = isFormDataComplete();
+
+      if (!form) {
+        setLoading(false);
+        toast.warning("Please fill all fields", {
+          position: "top-center",
+        });
+        return;
+      }
+
       const response = await axios.post(
         `${apiUrl}/api/drop/add`,
         formData,
@@ -206,7 +220,7 @@ const DropModal = ({ status, centerID }) => {
             backgroundColor: "#0B490D",
           },
         }}
-        disabled={status}
+        disabled={<OperatingHours hours={hours} /> ? false : true}
         onClick={handleClickOpen}
       >
         Drop off

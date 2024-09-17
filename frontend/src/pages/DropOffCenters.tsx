@@ -18,6 +18,7 @@ import Side_nav_container from "../containers/Side_nav_container";
 import { useNavigate } from "react-router-dom";
 import Env from "../Env";
 import axios from "axios";
+import OperatingHours from "../utils/OperatingHours";
 const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const DropOffCenters = () => {
@@ -64,6 +65,7 @@ const DropOffCenters = () => {
         `${apiUrl}/api/dropOffCenter/get`,
         config
       );
+      console.log(response.data);
       setDropOffCenter(response.data);
     } catch (error) {
       console.log(error);
@@ -75,7 +77,7 @@ const DropOffCenters = () => {
       navigate(`/`);
     }
     getCenters();
-  });
+  }, []);
 
   return (
     <Side_nav_container>
@@ -111,15 +113,33 @@ const DropOffCenters = () => {
                       <CalculateDistance
                         myLatitude={cookies.latitude}
                         myLongitude={cookies.Longitude}
-                        centerLatitude={6.535}
-                        centerLongitude={3.386}
+                        centerLatitude={center.coordinates[1]}
+                        centerLongitude={center.coordinates[0]}
                       />
                     </div>
                     <Chip
-                      label={center.status ? "open" : "close"}
+                      label={
+                        <OperatingHours hours={center.operatingHours} /> ? (
+                          "open"
+                        ) : (
+                          "closed"
+                        )
+                      }
                       sx={{
-                        backgroundColor: center.status ? "#a5d6a7" : "#ef9a9a",
-                        color: center.status ? "#2e7d32" : "#c62828",
+                        backgroundColor: <OperatingHours
+                          hours={center.operatingHours}
+                        /> ? (
+                          "#a5d6a7"
+                        ) : (
+                          "#ef9a9a"
+                        ),
+                        color: <OperatingHours
+                          hours={center.operatingHours}
+                        /> ? (
+                          "#2e7d32"
+                        ) : (
+                          "#c62828"
+                        ),
                       }}
                     />
                   </Stack>
@@ -129,7 +149,7 @@ const DropOffCenters = () => {
               <div className="flex justify-center m-5">
                 <CardActionArea>
                   <DropModal
-                    status={center.status}
+                    hours={center.operatingHours}
                     centerID={center.centerID}
                   />
                 </CardActionArea>

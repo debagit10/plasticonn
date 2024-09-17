@@ -26,6 +26,7 @@ const AuthContainer = React.lazy(
 interface BodyData {
   name?: string;
   address?: string;
+  coordinates?: number[];
   person?: string;
   phone?: string;
   email?: string;
@@ -50,6 +51,7 @@ const RegisterCenter: React.FC<BodyData> = () => {
     phone: "",
     email: "",
     address: "",
+    coordinates: [],
     password: "",
     person: "",
     operatingHours: "",
@@ -62,6 +64,23 @@ const RegisterCenter: React.FC<BodyData> = () => {
   const [picUrl, setPicUrl] = useState<string>("");
   const [fileUrl, setFileUrl] = useState("");
 
+  const successCallback = (position: any) => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    setCookies("latitude", `${latitude}`);
+    setCookies("longitude", `${longitude}`);
+  };
+
+  const errorCallback = (error: any) => {
+    console.error(`Error: ${error.message}`);
+  };
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+  } else {
+    console.log("Geolocation is not supported by this browser.");
+  }
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevstate) => ({
@@ -70,9 +89,9 @@ const RegisterCenter: React.FC<BodyData> = () => {
     }));
   };
 
-  const isFormDataComplete = () => {
-    return Object.values(formData).every((value) => value.trim() !== "");
-  };
+  // const isFormDataComplete = () => {
+  //   return Object.values(formData).every((value) => value.trim() !== "" || []);
+  // };
 
   const uploadPicture = async (event: any) => {
     const pic = event.target.files[0]; // Get the first file from the input
@@ -107,20 +126,22 @@ const RegisterCenter: React.FC<BodyData> = () => {
   const submit = async () => {
     formData.pic = picUrl;
     formData.person = fileUrl;
+    formData.coordinates.push(cookies.longitude);
+    formData.coordinates.push(cookies.latitude);
     const config = { headers: { "Content-type": "application/json" } };
 
     try {
       console.log(formData);
       setLoading(true);
-      const form = isFormDataComplete();
+      //const form = isFormDataComplete();
 
-      if (!form) {
-        setLoading(false);
-        toast.warning("Please fill all fields", {
-          position: "top-center",
-        });
-        return;
-      }
+      // if (!form) {
+      //   setLoading(false);
+      //   toast.warning("Please fill all fields", {
+      //     position: "top-center",
+      //   });
+      //   return;
+      // }
       const response = await axios.post(
         `${apiUrl}/api/dropOffCenter/register`,
         formData,
@@ -143,17 +164,18 @@ const RegisterCenter: React.FC<BodyData> = () => {
       }
     } catch (error: any) {
       setLoading(false);
-      if (error.response.data.info) {
-        toast.info(error.response.data.info, {
-          position: "top-center",
-          autoClose: 1000,
-        });
-      } else if (error.response.data.error) {
-        toast.error(error.response.data.error, {
-          position: "top-center",
-          autoClose: 1000,
-        });
-      }
+      console.log(error);
+      // if (error.response.data.info) {
+      //   toast.info(error.response.data.info, {
+      //     position: "top-center",
+      //     autoClose: 1000,
+      //   });
+      // } else if (error.response.data.error) {
+      //   toast.error(error.response.data.error, {
+      //     position: "top-center",
+      //     autoClose: 1000,
+      //   });
+      // }
     }
   };
 
@@ -549,7 +571,7 @@ const RegisterCenter: React.FC<BodyData> = () => {
                 Already have an account?{" "}
                 <span
                   className="underline cursor-pointer"
-                  onClick={() => navigate("/login-center")}
+                  onClick={() => navigate("/login-dropOffCenter")}
                 >
                   Login
                 </span>

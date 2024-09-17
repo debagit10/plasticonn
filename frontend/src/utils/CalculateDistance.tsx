@@ -22,7 +22,7 @@ const CalculateDistance: React.FC<DataProps> = ({
   const distance = turf.distance(from, to);
   const roundedDistance = Math.round(distance);
 
-  return <div>{roundedDistance} km</div>;
+  return <div>{roundedDistance}km away</div>;
 };
 
 export default CalculateDistance;
