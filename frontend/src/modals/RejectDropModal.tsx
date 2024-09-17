@@ -51,6 +51,7 @@ const RejectDropModal = ({ dropID }) => {
     const data = { status, dropID };
 
     try {
+      setLoading(true);
       const response = await axios.patch(
         `${apiUrl}/api/drop/manage`,
         data,
