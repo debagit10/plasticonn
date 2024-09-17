@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -16,9 +16,13 @@ import { useCookies } from "react-cookie";
 import DropModal from "../modals/DropModal";
 import Side_nav_container from "../containers/Side_nav_container";
 import { useNavigate } from "react-router-dom";
+import Env from "../Env";
+import axios from "axios";
+const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const DropOffCenters = () => {
   const [cookies, setCookies] = useCookies();
+  const [dropOffCenter, setDropOffCenter] = useState([]);
 
   const centerList = [
     { name: "Drop Hub", address: "11, Odelana Street", status: true },
@@ -28,6 +32,16 @@ const DropOffCenters = () => {
     { name: "Drop Hub", address: "11, Odelana Street", status: true },
     { name: "Drop Hub", address: "11, Odelana Street", status: false },
   ];
+
+  let apiUrl: string;
+
+  if (CLIENT_ENV == "prod") {
+    apiUrl = BASE_PROD_API_URL;
+  } else if (CLIENT_ENV == "dev") {
+    apiUrl = BASE_DEV_API_URL;
+  }
+
+  const navigate = useNavigate();
 
   const successCallback = (position: any) => {
     const latitude = position.coords.latitude;
@@ -46,11 +60,30 @@ const DropOffCenters = () => {
     console.log("Geolocation is not supported by this browser.");
   }
 
-  const navigate = useNavigate();
+  const getCenters = async () => {
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${cookies.token}`,
+        },
+      };
+
+      const response = await axios.get(
+        `${apiUrl}/api/dropOffCenter/get`,
+        config
+      );
+      setDropOffCenter(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     if (!cookies.token) {
       navigate(`/login-${cookies.role}`);
     }
+    getCenters();
   });
 
   return (
@@ -68,7 +101,7 @@ const DropOffCenters = () => {
         </Typography>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {centerList.map((center) => (
+          {dropOffCenter.map((center) => (
             <Card sx={{ maxWidth: 345, backgroundColor: "#D9F0DA" }}>
               <CardHeader
                 title={<Typography variant="h5">{center.name}</Typography>}
@@ -77,7 +110,7 @@ const DropOffCenters = () => {
                 }
               />
               <div className="mx-5 flex justify-center">
-                <img src={logo} className="w-44 h-44" />
+                <img src={center.pic} className="w-44 h-44" />
               </div>
 
               <CardContent>
