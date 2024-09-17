@@ -72,7 +72,7 @@ const DropOffCenters = () => {
 
   useEffect(() => {
     if (!cookies.token) {
-      navigate(`/login-${cookies.role}`);
+      navigate(`/`);
     }
     getCenters();
   });

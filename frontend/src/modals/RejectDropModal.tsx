@@ -1,17 +1,22 @@
+import React, { useState } from "react";
+import { useCookies } from "react-cookie";
 import {
   Button,
   Dialog,
-  DialogActions,
+  DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogTitle,
+  DialogActions,
 } from "@mui/material";
-import React, { useState } from "react";
-import { useCookies } from "react-cookie";
-import { VscSignOut } from "react-icons/vsc";
+import { MdOutlineCancel } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import Env from "../Env";
+const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
-const SignOutModal = () => {
-  const [cookies, setCookies, removeCookie] = useCookies();
+const RejectDropModal = ({ dropID }) => {
+  const [cookies, setCookies] = useCookies();
   const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -25,34 +30,69 @@ const SignOutModal = () => {
     setAnchorEl(null);
   };
 
-  const handleSignOut = () => {
-    setLoading(true);
-    setTimeout(() => {
-      removeCookie("token");
-      removeCookie("role");
-    }, 3000);
+  let apiUrl: string;
+
+  if (CLIENT_ENV == "prod") {
+    apiUrl = BASE_PROD_API_URL;
+  } else if (CLIENT_ENV == "dev") {
+    apiUrl = BASE_DEV_API_URL;
+  }
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${cookies.token}`,
+    },
   };
+
+  const rejectDrop = async () => {
+    const status = "false";
+
+    const data = { status, dropID };
+
+    try {
+      const response = await axios.patch(
+        `${apiUrl}/api/drop/manage`,
+        data,
+        config
+      );
+
+      if (response.data.accepted === "false") {
+        toast.success("Drop rejected successfully", {
+          position: "top-center",
+          autoClose: 1500,
+          onClose: () => {
+            handleClose();
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
+      <ToastContainer />
       <Button
         fullWidth
         variant="outlined"
         sx={{
-          borderColor: "#047308",
+          borderColor: "red",
           color: "white",
-          backgroundColor: "#047308",
+          backgroundColor: "red",
           borderRadius: "31px",
           textTransform: "capitalize",
 
           "&:hover": {
-            color: "white",
-            borderColor: "#047308",
+            color: "red",
+            borderColor: "red",
           },
         }}
-        startIcon={<VscSignOut />}
+        startIcon={<MdOutlineCancel />}
         onClick={handleClick}
       >
-        Sign out
+        Reject
       </Button>
 
       <Dialog
@@ -61,10 +101,10 @@ const SignOutModal = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Confirm sign out"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Reject drop?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to sign out?
+            Are you sure you want to reject this drop?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -96,9 +136,9 @@ const SignOutModal = () => {
               },
             }}
             disabled={loading}
-            onClick={handleSignOut}
+            onClick={rejectDrop}
           >
-            {loading ? "Signing out..." : "Sign out"}
+            {loading ? "Rejecting..." : "Confirm"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -106,4 +146,4 @@ const SignOutModal = () => {
   );
 };
 
-export default SignOutModal;
+export default RejectDropModal;

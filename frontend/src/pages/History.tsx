@@ -45,7 +45,7 @@ const History = () => {
         `${apiUrl}/api/${cookies.role}/history`,
         config
       );
-
+      console.log(response.data);
       setHistory(response.data);
     } catch (error) {
       console.log(error);
@@ -54,7 +54,7 @@ const History = () => {
 
   useEffect(() => {
     if (!cookies.token) {
-      navigate(`/login-${cookies.role}`);
+      navigate(`/`);
     }
     getHistory();
   }, []);

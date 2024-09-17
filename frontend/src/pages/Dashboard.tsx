@@ -53,7 +53,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!cookies.token) {
-      navigate(`/login-${cookies.role}`);
+      navigate(`/`);
     }
   });
 

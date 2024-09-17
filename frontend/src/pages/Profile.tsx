@@ -64,7 +64,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!cookies.token) {
-      navigate(`/login-${cookies.role}`);
+      navigate(`/`);
     }
     getUserData();
   }, []);

@@ -1,17 +1,22 @@
+import React, { useState } from "react";
+import { useCookies } from "react-cookie";
 import {
   Button,
   Dialog,
-  DialogActions,
+  DialogTitle,
   DialogContent,
   DialogContentText,
-  DialogTitle,
+  DialogActions,
 } from "@mui/material";
-import React, { useState } from "react";
-import { useCookies } from "react-cookie";
-import { VscSignOut } from "react-icons/vsc";
+import { GiConfirmed } from "react-icons/gi";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import Env from "../Env";
+const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
-const SignOutModal = () => {
-  const [cookies, setCookies, removeCookie] = useCookies();
+const AcceptDropModal = ({ dropID }) => {
+  const [cookies, setCookies] = useCookies();
   const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -25,15 +30,50 @@ const SignOutModal = () => {
     setAnchorEl(null);
   };
 
-  const handleSignOut = () => {
-    setLoading(true);
-    setTimeout(() => {
-      removeCookie("token");
-      removeCookie("role");
-    }, 3000);
+  let apiUrl: string;
+
+  if (CLIENT_ENV == "prod") {
+    apiUrl = BASE_PROD_API_URL;
+  } else if (CLIENT_ENV == "dev") {
+    apiUrl = BASE_DEV_API_URL;
+  }
+
+  const config = {
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${cookies.token}`,
+    },
   };
+
+  const acceptDrop = async () => {
+    const status = "true";
+
+    const data = { status, dropID };
+
+    try {
+      const response = await axios.patch(
+        `${apiUrl}/api/drop/manage`,
+        data,
+        config
+      );
+
+      if (response.data.accepted === "true") {
+        toast.success("Drop accepted successfully", {
+          position: "top-center",
+          autoClose: 1500,
+          onClose: () => {
+            handleClose();
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div>
+      <ToastContainer />
       <Button
         fullWidth
         variant="outlined"
@@ -45,14 +85,14 @@ const SignOutModal = () => {
           textTransform: "capitalize",
 
           "&:hover": {
-            color: "white",
+            color: "#047308",
             borderColor: "#047308",
           },
         }}
-        startIcon={<VscSignOut />}
+        startIcon={<GiConfirmed />}
         onClick={handleClick}
       >
-        Sign out
+        Accept
       </Button>
 
       <Dialog
@@ -61,10 +101,10 @@ const SignOutModal = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"Confirm sign out"}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"Accept drop?"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to sign out?
+            Are you sure you want to accept this drop?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -96,9 +136,9 @@ const SignOutModal = () => {
               },
             }}
             disabled={loading}
-            onClick={handleSignOut}
+            onClick={acceptDrop}
           >
-            {loading ? "Signing out..." : "Sign out"}
+            {loading ? "Accepting..." : "Confirm"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -106,4 +146,4 @@ const SignOutModal = () => {
   );
 };
 
-export default SignOutModal;
+export default AcceptDropModal;

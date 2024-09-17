@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
-import { Button, Paper, Stack, Typography } from "@mui/material";
+import { Button, Chip, Paper, Stack, Typography } from "@mui/material";
 import Env from "../Env";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Side_nav_container from "../containers/Side_nav_container";
+import RejectDropModal from "../modals/RejectDropModal";
+import AcceptDropModal from "../modals/AcceptDropModal";
 const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 interface Detail {
-  accepted: boolean;
+  accepted: string;
   centerID: string;
   collectorID: string;
   condition: string;
@@ -52,128 +55,87 @@ const ViewDrop = () => {
     }
   };
 
-  const acceptDrop = async () => {
-    const status = "true";
-    const dropID = detail?._id;
-
-    const data = { status, dropID };
-
-    try {
-      const response = await axios.patch(
-        `${apiUrl}/api/drop/manage`,
-        data,
-        config
-      );
-
-      if (response.data.accepted === true) {
-        toast.success("Drop accepted successfully", {
-          position: "top-center",
-          autoClose: 1500,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const rejectDrop = async () => {
-    const status = "false";
-    const dropID = detail?._id;
-
-    const data = { status, dropID };
-
-    try {
-      const response = await axios.patch(
-        `${apiUrl}/api/drop/manage`,
-        data,
-        config
-      );
-
-      if (response.data.accepted === false) {
-        toast.success("Drop rejected successfully", {
-          position: "top-center",
-          autoClose: 1500,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!cookies.token) {
-      navigate(`/login-${cookies.role}`);
+      navigate(`/`);
     }
     dropDetail();
   }, []);
 
   return (
-    <div className="flex justify-center items-center m-10">
-      <ToastContainer />
-      <Paper
-        sx={{ padding: "10px", maxWidth: 345, backgroundColor: "#D9F0DA" }}
-      >
-        <div className="m-5">
-          <Typography variant="h4">Drop-off details</Typography>
-        </div>
-        <div className="flex flex-col m-5">
-          <Typography variant="h6">
-            Collector's ID: {detail?.collectorID}
-          </Typography>
-          <Typography variant="h6">Center's ID: {detail?.centerID}</Typography>
-        </div>
-
-        <div className="flex flex-col m-5">
-          <Typography variant="subtitle1">
-            Plastic type(s): {detail?.type}
-          </Typography>
-          <Typography variant="subtitle1">
-            Amount of plastic: {detail?.amount}
-          </Typography>
-          <Typography variant="subtitle1">
-            Condition of plastic: {detail?.condition}
-          </Typography>
-        </div>
-
-        <div className="m-5 flex justify-center">
-          <Stack direction="row" spacing={3}>
-            <Button
-              variant="outlined"
+    <Side_nav_container>
+      <div className="mx-10 my-5">
+        <ToastContainer />
+        <Paper
+          sx={{ padding: "10px", maxWidth: 345, backgroundColor: "#D9F0DA" }}
+        >
+          <div className="m-5">
+            <Typography variant="h4">Drop-off details</Typography>
+            <Chip
+              label={
+                detail?.accepted === "pending.."
+                  ? "Pending"
+                  : detail?.accepted === "true"
+                  ? "Accepted"
+                  : "Rejected"
+              }
               sx={{
-                borderColor: "red",
-                color: "red",
-                borderRadius: "31px",
-                textTransform: "capitalize",
-                "&:hover": {
-                  backgroundColor: "red",
-                  color: "white",
-                  borderColor: "white",
-                },
+                backgroundColor:
+                  detail?.accepted === "pending.."
+                    ? "#bdbdbd" // Grey for pending
+                    : detail?.accepted === "true"
+                    ? "#a5d6a7" // Green for accepted
+                    : "#ef9a9a", // Red for rejected
+                color:
+                  detail?.accepted === "pending.."
+                    ? "#616161" // Darker grey for text when pending
+                    : detail?.accepted === "true"
+                    ? "#2e7d32" // Dark green for accepted
+                    : "#c62828", // Dark red for rejected
               }}
-              onClick={rejectDrop}
-            >
-              Reject
-            </Button>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#0B490D",
-                borderRadius: "31px",
-                textTransform: "capitalize",
-                "&:hover": {
-                  backgroundColor: "#0B490D",
-                },
-              }}
-              onClick={acceptDrop}
-            >
-              Accept
-            </Button>
-          </Stack>
-        </div>
-      </Paper>
-    </div>
+            />
+          </div>
+          <div className="flex flex-col m-5">
+            <Typography variant="h6">
+              Collector's ID: {detail?.collectorID}
+            </Typography>
+            <Typography variant="h6">
+              Center's ID: {detail?.centerID}
+            </Typography>
+          </div>
+
+          <div className="flex flex-col m-5">
+            <Typography variant="subtitle1">
+              Plastic type(s):{" "}
+              {detail?.type.map((item) => (
+                <ul>
+                  <li>
+                    <Typography variant="caption">- {item}</Typography>
+                  </li>
+                </ul>
+              ))}
+            </Typography>
+            <Typography variant="subtitle1">
+              Amount of plastic: {detail?.amount}
+            </Typography>
+            <Typography variant="subtitle1">
+              Condition of plastic: {detail?.condition}
+            </Typography>
+          </div>
+
+          {cookies.role === "dropOffCenter" && (
+            <div className="m-5 flex justify-center">
+              <Stack direction="row" spacing={3}>
+                <RejectDropModal dropID={detail?._id} />
+                <AcceptDropModal dropID={detail?._id} />
+              </Stack>
+            </div>
+          )}
+        </Paper>
+      </div>
+    </Side_nav_container>
   );
 };
 
