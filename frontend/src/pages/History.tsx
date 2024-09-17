@@ -86,13 +86,6 @@ const History = () => {
             </TableHead>
             <TableBody>
               {history
-                .filter((item) => {
-                  const now = new Date();
-                  const itemDate = new Date(item.createdAt);
-                  const diffInHours =
-                    (now.getTime() - itemDate.getTime()) / (1000 * 60 * 60);
-                  return diffInHours <= 24; // Keep only items within the last 24 hours
-                })
                 .sort(
                   (a: any, b: any) =>
                     new Date(b.createdAt).getTime() -
