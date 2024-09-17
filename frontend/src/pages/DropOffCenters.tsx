@@ -104,7 +104,7 @@ const DropOffCenters = () => {
 
               <div className="flex justify-center m-5">
                 <CardActionArea>
-                  <DropModal />
+                  <DropModal status={center.status} />
                 </CardActionArea>
               </div>
             </Card>

@@ -33,7 +33,7 @@ interface FormData {
   location: number[];
 }
 
-const DropModal = () => {
+const DropModal = ({ status }) => {
   const [cookies, setCookies] = useCookies();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -163,6 +163,7 @@ const DropModal = () => {
             backgroundColor: "#0B490D",
           },
         }}
+        disabled={status}
         onClick={handleClickOpen}
       >
         Drop off
