@@ -64,7 +64,7 @@ const SideBar = () => {
         `${apiUrl}/api/${cookies.role}/userData`,
         config
       );
-      console.log(response.data);
+      console.log(response);
 
       setCookies("userID", response.data._id);
     } catch (error) {
