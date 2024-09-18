@@ -109,8 +109,16 @@ const Navbar = () => {
         <div className="md:hidden flex ml-16">
           <img src={logo} alt="plasticonn logo" className="w-16 h-16" />
         </div>
-        <div className="hidden md:block">
-          <TextField
+        <div className="hidden md:block mt-5">
+          <Typography variant="h6">
+            {cookies.role === "collector" ? "Collector's ID" : "Center's ID"}:{" "}
+            <span style={{ textDecoration: "underline" }}>
+              {cookies.role === "collector"
+                ? userData.collectorID
+                : userData.centerID}
+            </span>
+          </Typography>
+          {/* <TextField
             onChange={handleInputChange}
             placeholder="Search anything"
             fullWidth
@@ -158,7 +166,7 @@ const Navbar = () => {
                 </InputAdornment>
               ),
             }}
-          />
+          /> */}
         </div>
         <Stack padding="0.75rem" spacing={7} direction="row">
           <div className="hidden md:block">
