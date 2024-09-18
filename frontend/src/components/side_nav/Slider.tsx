@@ -171,7 +171,7 @@ const Slider = () => {
           <div className="flex ">
             <img src={logo} alt="plasticonn logo" className="w-16 h-16 " />
             <div className="text-white">
-              <Typography variant="h6">
+              {/* <Typography variant="h6">
                 {cookies.role === "collector"
                   ? "Collector's ID"
                   : "Center's ID"}
@@ -181,7 +181,7 @@ const Slider = () => {
                     ? userData.collectorID
                     : userData.centerID}
                 </span>
-              </Typography>
+              </Typography> */}
               {/* <TextField
                 onChange={handleInputChange}
                 placeholder="Search anything"
