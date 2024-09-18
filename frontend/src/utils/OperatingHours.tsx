@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import { Chip } from "@mui/material";
+import React, { useState, useEffect } from "react";
 
-const OperatingHours = ({ hours }) => {
+const OperatingHours = ({ operatingHours }) => {
   const [open, setOpen] = useState(false);
-  function parseOperatingHours(hours: string) {
+
+  const parseOperatingHours = (hours: string) => {
     // Example inputs: "9AM-5PM" or "9:30AM-5:30PM"
     const [startTime, endTime] = hours.split("-"); // Split into ["9AM", "5PM"] or ["9:30AM", "5:30PM"]
 
     // Helper function to convert "9AM" or "5:30PM" to 24-hour format
-    const convertTo24Hour = (time) => {
+    const convertTo24Hour = (time: string) => {
       const timePeriod = time.slice(-2); // Extract AM/PM
       let [hourPart, minutePart] = time.slice(0, -2).split(":"); // Extract hour and minute
 
@@ -37,19 +39,30 @@ const OperatingHours = ({ hours }) => {
     closingTime.setHours(closingHour, closingMinute, 0); // Set closing time
 
     return { openingTime, closingTime };
-  }
+  };
 
-  const { openingTime, closingTime } = parseOperatingHours(hours);
+  useEffect(() => {
+    const { openingTime, closingTime } = parseOperatingHours(operatingHours);
+    const now = new Date();
 
-  const now = new Date();
+    if (now >= openingTime && now <= closingTime) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [operatingHours]);
 
-  if (now >= openingTime && now <= closingTime) {
-    setOpen(true);
-  } else {
-    setOpen(false);
-  }
-
-  return <div>{open}</div>;
+  return (
+    <div>
+      <Chip
+        label={open ? "open" : "closed"}
+        sx={{
+          backgroundColor: open ? "#a5d6a7" : "#ef9a9a",
+          color: open ? "#2e7d32" : "#c62828",
+        }}
+      />
+    </div>
+  );
 };
 
 export default OperatingHours;

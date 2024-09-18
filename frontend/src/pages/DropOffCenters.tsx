@@ -109,39 +109,13 @@ const DropOffCenters = () => {
               <CardContent>
                 <div className="flex justify-center">
                   <Stack direction="row" spacing={3}>
-                    <div>
-                      <CalculateDistance
-                        myLatitude={cookies.latitude}
-                        myLongitude={cookies.Longitude}
-                        centerLatitude={center.coordinates[1]}
-                        centerLongitude={center.coordinates[0]}
-                      />
-                    </div>
-                    <Chip
-                      label={
-                        <OperatingHours hours={center.operatingHours} /> ? (
-                          "open"
-                        ) : (
-                          "closed"
-                        )
-                      }
-                      sx={{
-                        backgroundColor: <OperatingHours
-                          hours={center.operatingHours}
-                        /> ? (
-                          "#a5d6a7"
-                        ) : (
-                          "#ef9a9a"
-                        ),
-                        color: <OperatingHours
-                          hours={center.operatingHours}
-                        /> ? (
-                          "#2e7d32"
-                        ) : (
-                          "#c62828"
-                        ),
-                      }}
+                    <CalculateDistance
+                      myLatitude={cookies.latitude}
+                      myLongitude={cookies.Longitude}
+                      centerLatitude={center.coordinates[1]}
+                      centerLongitude={center.coordinates[0]}
                     />
+                    <OperatingHours operatingHours={center.operatingHours} />
                   </Stack>
                 </div>
               </CardContent>
