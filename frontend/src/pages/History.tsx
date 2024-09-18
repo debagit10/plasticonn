@@ -10,6 +10,10 @@ import {
   Typography,
   Skeleton,
   Stack,
+  Divider,
+  IconButton,
+  InputAdornment,
+  TextField,
 } from "@mui/material";
 import { radiansToLength } from "@turf/turf";
 import React, { useEffect, useState } from "react";
@@ -20,6 +24,7 @@ import axios from "axios";
 import Env from "../Env";
 import DayAndTime from "../utils/DayAndTime";
 import { FaCircleInfo } from "react-icons/fa6";
+import { IoSearch } from "react-icons/io5";
 const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const History = () => {
@@ -27,6 +32,11 @@ const History = () => {
   const [cookies, setCookies] = useCookies();
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
+  const handleInputChange = (e: any) => {
+    setSearchText(e.target.value);
+  };
 
   let apiUrl: string;
 
@@ -70,6 +80,56 @@ const History = () => {
   return (
     <Side_nav_container>
       <div className="mx-10 my-5">
+        <TextField
+          onChange={handleInputChange}
+          placeholder="Search for drop center"
+          sx={{
+            marginX: {
+              xs: "0", // No margin on small screens
+              md: "20%", // Apply 20% margin from medium screens and above
+            },
+            padding: ".5rem",
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "black",
+                borderWidth: "2px",
+                borderRadius: "31px",
+              },
+              "&:hover fieldset": {
+                borderColor: "black",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "#0B490D",
+              },
+              padding: 0,
+            },
+            "& input": {
+              padding: "1rem",
+              paddingLeft: "2rem",
+            },
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                className={searchText ? "cursor-pointer" : "cursor-not-allowed"}
+                position="end"
+                sx={{
+                  padding: "0.5rem",
+                }}
+              >
+                <IconButton disabled={!searchText}>
+                  <Divider sx={{ height: 28, m: 2 }} orientation="vertical" />
+                  <IoSearch
+                    style={{
+                      color: searchText ? "#0B490D" : "grey",
+                      fontSize: "1.5rem",
+                    }}
+                  />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
         <Typography
           variant="h6"
           sx={{
@@ -109,6 +169,11 @@ const History = () => {
               </TableHead>
               <TableBody>
                 {history
+                  .filter((item) => {
+                    return searchText.toLowerCase() === ""
+                      ? item
+                      : item.centerID.toLowerCase().includes(searchText);
+                  })
                   .sort(
                     (a: any, b: any) =>
                       new Date(b.createdAt).getTime() -

@@ -25,7 +25,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [cookies, setCookies, removeCookie] = useCookies();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [searchText, setSearchText] = useState("");
   const [activeMenu, setActiveMenu] = useState("");
   const [userData, setUserData] = useState({
     fullName: "",
@@ -37,10 +36,6 @@ const Navbar = () => {
     centerID: "",
     pic: "",
   });
-
-  const handleInputChange = (e: any) => {
-    setSearchText(e.target.value);
-  };
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -120,55 +115,6 @@ const Navbar = () => {
                 : userData.centerID}
             </span>
           </Typography>
-          {/* <TextField
-            onChange={handleInputChange}
-            placeholder="Search anything"
-            fullWidth
-            sx={{
-              padding: ".5rem",
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": {
-                  borderColor: "black",
-                  borderWidth: "2px",
-                  borderRadius: "31px",
-                },
-                "&:hover fieldset": {
-                  borderColor: "black",
-                },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#0B490D",
-                },
-                padding: 0,
-              },
-              "& input": {
-                padding: "1rem",
-                paddingLeft: "2rem",
-              },
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment
-                  className={
-                    searchText ? "cursor-pointer" : "cursor-not-allowed"
-                  }
-                  position="end"
-                  sx={{
-                    padding: "0.5rem",
-                  }}
-                >
-                  <IconButton disabled={!searchText}>
-                    <Divider sx={{ height: 28, m: 2 }} orientation="vertical" />
-                    <IoSearch
-                      style={{
-                        color: searchText ? "#0B490D" : "grey",
-                        fontSize: "1.5rem",
-                      }}
-                    />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          /> */}
         </div>
         <Stack padding="0.75rem" spacing={7} direction="row">
           <div className="hidden md:block">

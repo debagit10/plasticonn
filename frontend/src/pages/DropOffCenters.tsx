@@ -8,6 +8,10 @@ import {
   Chip,
   CardActionArea,
   Skeleton,
+  Divider,
+  IconButton,
+  InputAdornment,
+  TextField,
 } from "@mui/material";
 
 import logo from "../images/logo.png";
@@ -20,12 +24,18 @@ import { useNavigate } from "react-router-dom";
 import Env from "../Env";
 import axios from "axios";
 import OperatingHours from "../utils/OperatingHours";
+import { IoSearch } from "react-icons/io5";
 const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const DropOffCenters = () => {
   const [cookies, setCookies] = useCookies();
   const [dropOffCenter, setDropOffCenter] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
+  const handleInputChange = (e: any) => {
+    setSearchText(e.target.value);
+  };
 
   let apiUrl: string;
 
@@ -88,6 +98,57 @@ const DropOffCenters = () => {
   return (
     <Side_nav_container>
       <div className="mx-10 my-5">
+        <TextField
+          onChange={handleInputChange}
+          placeholder="Search for drop center"
+          sx={{
+            marginX: {
+              xs: "0", // No margin on small screens
+              md: "20%", // Apply 20% margin from medium screens and above
+            },
+            padding: ".5rem",
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "black",
+                borderWidth: "2px",
+                borderRadius: "31px",
+              },
+              "&:hover fieldset": {
+                borderColor: "black",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "#0B490D",
+              },
+              padding: 0,
+            },
+            "& input": {
+              padding: "1rem",
+              paddingLeft: "2rem",
+            },
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment
+                className={searchText ? "cursor-pointer" : "cursor-not-allowed"}
+                position="end"
+                sx={{
+                  padding: "0.5rem",
+                }}
+              >
+                <IconButton disabled={!searchText}>
+                  <Divider sx={{ height: 28, m: 2 }} orientation="vertical" />
+                  <IoSearch
+                    style={{
+                      color: searchText ? "#0B490D" : "grey",
+                      fontSize: "1.5rem",
+                    }}
+                  />
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+
         <Typography
           variant="h6"
           sx={{
@@ -111,42 +172,48 @@ const DropOffCenters = () => {
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {dropOffCenter.map((center) => (
-            <Card sx={{ maxWidth: 345, backgroundColor: "#D9F0DA" }}>
-              <CardHeader
-                title={<Typography variant="h5">{center.name}</Typography>}
-                subheader={
-                  <Typography variant="caption">{center.address}</Typography>
-                }
-              />
-              <div className="mx-5 flex justify-center">
-                <img src={center.pic} className="w-44 h-44" />
-              </div>
-
-              <CardContent>
-                <div className="flex justify-center">
-                  <Stack direction="row" spacing={3}>
-                    <CalculateDistance
-                      myLatitude={cookies.latitude}
-                      myLongitude={cookies.Longitude}
-                      centerLatitude={center.coordinates[1]}
-                      centerLongitude={center.coordinates[0]}
-                    />
-                    <OperatingHours operatingHours={center.operatingHours} />
-                  </Stack>
+          {dropOffCenter
+            .filter((item) => {
+              return searchText.toLowerCase() === ""
+                ? item
+                : item.name.toLowerCase().includes(searchText);
+            })
+            .map((center) => (
+              <Card sx={{ maxWidth: 345, backgroundColor: "#D9F0DA" }}>
+                <CardHeader
+                  title={<Typography variant="h5">{center.name}</Typography>}
+                  subheader={
+                    <Typography variant="caption">{center.address}</Typography>
+                  }
+                />
+                <div className="mx-5 flex justify-center">
+                  <img src={center.pic} className="w-44 h-44" />
                 </div>
-              </CardContent>
 
-              <div className="flex justify-center m-5">
-                <CardActionArea>
-                  <DropModal
-                    hours={center.operatingHours}
-                    centerID={center.centerID}
-                  />
-                </CardActionArea>
-              </div>
-            </Card>
-          ))}
+                <CardContent>
+                  <div className="flex justify-center">
+                    <Stack direction="row" spacing={3}>
+                      <CalculateDistance
+                        myLatitude={cookies.latitude}
+                        myLongitude={cookies.Longitude}
+                        centerLatitude={center.coordinates[1]}
+                        centerLongitude={center.coordinates[0]}
+                      />
+                      <OperatingHours operatingHours={center.operatingHours} />
+                    </Stack>
+                  </div>
+                </CardContent>
+
+                <div className="flex justify-center m-5">
+                  <CardActionArea>
+                    <DropModal
+                      hours={center.operatingHours}
+                      centerID={center.centerID}
+                    />
+                  </CardActionArea>
+                </div>
+              </Card>
+            ))}
         </div>
       </div>
     </Side_nav_container>
