@@ -243,7 +243,7 @@ const Slider = () => {
           />
 
           <div className="mt-5 ml-4 text-white">
-            {cookies.role === "center" ? (
+            {cookies.role === "dropOffCenter" ? (
               <Stack
                 direction="row"
                 spacing={1}

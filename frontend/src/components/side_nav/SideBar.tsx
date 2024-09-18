@@ -100,7 +100,7 @@ const SideBar = () => {
       />
 
       <div className="mt-5  text-white">
-        {cookies.role === "center" ? (
+        {cookies.role === "dropOffCenter" ? (
           <Stack
             direction="row"
             spacing={1}
