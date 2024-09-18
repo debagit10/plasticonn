@@ -32,6 +32,16 @@ const Slider = () => {
   const [cookies, setCookies, removeCookie] = useCookies();
   const [activeMenu, setActiveMenu] = useState("");
   const [searchText, setSearchText] = useState("");
+  const [userData, setUserData] = useState({
+    fullName: "",
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
+    collectorID: "",
+    centerID: "",
+    pic: "",
+  });
 
   const handleInputChange = (e: any) => {
     setSearchText(e.target.value);
@@ -84,8 +94,18 @@ const Slider = () => {
         `${apiUrl}/api/${cookies.role}/userData`,
         config
       );
-      console.log(response.data);
 
+      setUserData((prevState) => ({
+        ...prevState,
+        fullName: response.data.fullName || "",
+        name: response.data.name || "",
+        phone: response.data.phone || "",
+        email: response.data.email || "",
+        address: response.data.address || "",
+        collectorID: response.data.collectorID || "",
+        centerID: response.data.centerID || "",
+        pic: response.data.pic || "",
+      }));
       setCookies("userID", response.data._id);
     } catch (error) {
       console.log(error);
@@ -151,7 +171,18 @@ const Slider = () => {
           <div className="flex ">
             <img src={logo} alt="plasticonn logo" className="w-16 h-16 " />
             <div className="text-white">
-              <TextField
+              <Typography variant="h6">
+                {cookies.role === "collector"
+                  ? "Collector's ID"
+                  : "Center's ID"}
+                :{" "}
+                <span style={{ textDecoration: "underline" }}>
+                  {cookies.role === "collector"
+                    ? userData.collectorID
+                    : userData.centerID}
+                </span>
+              </Typography>
+              {/* <TextField
                 onChange={handleInputChange}
                 placeholder="Search anything"
                 sx={{
@@ -199,7 +230,7 @@ const Slider = () => {
                     </InputAdornment>
                   ),
                 }}
-              />
+              /> */}
             </div>
           </div>
 
