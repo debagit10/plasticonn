@@ -7,6 +7,7 @@ import {
   Stack,
   Chip,
   CardActionArea,
+  Skeleton,
 } from "@mui/material";
 
 import logo from "../images/logo.png";
@@ -24,6 +25,7 @@ const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 const DropOffCenters = () => {
   const [cookies, setCookies] = useCookies();
   const [dropOffCenter, setDropOffCenter] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   let apiUrl: string;
 
@@ -54,6 +56,7 @@ const DropOffCenters = () => {
 
   const getCenters = async () => {
     try {
+      setLoading(true);
       const config = {
         headers: {
           "Content-type": "application/json",
@@ -65,8 +68,11 @@ const DropOffCenters = () => {
         `${apiUrl}/api/dropOffCenter/get`,
         config
       );
-      console.log(response.data);
-      setDropOffCenter(response.data);
+
+      if (response) {
+        setLoading(false);
+        setDropOffCenter(response.data);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -92,6 +98,17 @@ const DropOffCenters = () => {
         >
           Drop Centers
         </Typography>
+
+        {loading && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Skeleton variant="rectangular" height={350} width="21.5rem" />
+            <Skeleton variant="rectangular" height={350} width="21.5rem" />
+            <Skeleton variant="rectangular" height={350} width="21.5rem" />
+            <Skeleton variant="rectangular" height={350} width="21.5rem" />
+            <Skeleton variant="rectangular" height={350} width="21.5rem" />
+            <Skeleton variant="rectangular" height={350} width="21.5rem" />
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {dropOffCenter.map((center) => (

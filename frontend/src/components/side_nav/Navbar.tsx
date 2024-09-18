@@ -76,17 +76,19 @@ const Navbar = () => {
         config
       );
 
-      setUserData((prevState) => ({
-        ...prevState,
-        fullName: response.data.fullName || "",
-        name: response.data.name || "",
-        phone: response.data.phone || "",
-        email: response.data.email || "",
-        address: response.data.address || "",
-        collectorID: response.data.collectorID || "",
-        centerID: response.data.centerID || "",
-        pic: response.data.pic || "",
-      }));
+      if (response) {
+        setUserData((prevState) => ({
+          ...prevState,
+          fullName: response.data.fullName || "",
+          name: response.data.name || "",
+          phone: response.data.phone || "",
+          email: response.data.email || "",
+          address: response.data.address || "",
+          collectorID: response.data.collectorID || "",
+          centerID: response.data.centerID || "",
+          pic: response.data.pic || "",
+        }));
+      }
     } catch (error) {
       console.log(error);
     }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { Stack, TextField, Typography } from "@mui/material";
+import { Skeleton, Stack, TextField, Typography } from "@mui/material";
 import Side_nav_container from "../containers/Side_nav_container";
 import EditProfileModal from "../modals/EditProfileModal";
 import DeleteAccountModal from "../modals/DeleteAccountModal";
@@ -10,6 +10,7 @@ import axios from "axios";
 const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 
 const Profile = () => {
+  const [loading, setLoading] = useState(false);
   const [cookies, setCookies] = useCookies();
   const [userData, setUserData] = useState({
     fullName: "",
@@ -40,23 +41,26 @@ const Profile = () => {
       },
     };
     try {
+      setLoading(true);
       const response = await axios.get(
         `${apiUrl}/api/${cookies.role}/userData`,
         config
       );
-      console.log(response.data);
 
-      setUserData((prevState) => ({
-        ...prevState,
-        fullName: response.data.fullName || "",
-        name: response.data.name || "",
-        phone: response.data.phone || "",
-        email: response.data.email || "",
-        address: response.data.address || "",
-        collectorID: response.data.collectorID || "",
-        centerID: response.data.centerID || "",
-        pic: response.data.pic || "",
-      }));
+      if (response) {
+        setLoading(false);
+        setUserData((prevState) => ({
+          ...prevState,
+          fullName: response.data.fullName || "",
+          name: response.data.name || "",
+          phone: response.data.phone || "",
+          email: response.data.email || "",
+          address: response.data.address || "",
+          collectorID: response.data.collectorID || "",
+          centerID: response.data.centerID || "",
+          pic: response.data.pic || "",
+        }));
+      }
     } catch (error) {
       console.log(error);
     }
@@ -83,163 +87,214 @@ const Profile = () => {
           Profile
         </Typography>
 
-        <div className="flex flex-col md:flex-row justify-center md:gap-[8rem] gap-[3rem] mt-10">
-          <div>
+        {loading && (
+          <div className="flex flex-col md:flex-row justify-center md:gap-[8rem] gap-[3rem] mt-10">
             <div className="flex justify-center">
-              <img src={userData.pic} className="w-36 h-36" />
+              <Stack spacing={2}>
+                <div className="flex justify-center">
+                  <Skeleton variant="circular" width="10rem" height="10rem" />
+                </div>
+                <div className="flex justify-center">
+                  <Skeleton variant="text" width="10rem" />
+                </div>
+                <div className="flex justify-center">
+                  <Skeleton variant="text" width="5rem" />
+                </div>
+                <div className="flex justify-center">
+                  <Skeleton variant="rounded" width="7rem" height="2rem" />
+                </div>
+                <div className=" flex justify-center">
+                  <Skeleton variant="rounded" width="10rem" height="2rem" />
+                </div>
+              </Stack>
             </div>
 
-            <div className="flex justify-center">
-              <Typography variant="h4">
-                {cookies.role === "collector"
-                  ? userData.fullName
-                  : userData.name}
-              </Typography>
-            </div>
-            <div className="flex justify-center">
-              <Typography variant="caption">
-                {cookies.role === "collector"
-                  ? "Collector/Volunteer"
-                  : "Collection Center"}
-              </Typography>
-            </div>
-            <div className="flex justify-center md:mt-5 mt-2">
-              <EditProfileModal />
-            </div>
-            <div className="flex justify-center md:mt-5 mt-2">
-              <DeleteAccountModal />
+            <div>
+              <Stack spacing={2}>
+                <Stack direction="row" spacing={2}>
+                  <Skeleton variant="text" width="5rem" />
+                  <Skeleton variant="rectangular" width="15rem" height="3rem" />
+                </Stack>
+                <Stack direction="row" spacing={2}>
+                  <Skeleton variant="text" width="5rem" />
+                  <Skeleton variant="rectangular" width="15rem" height="3rem" />
+                </Stack>
+                <Stack direction="row" spacing={2}>
+                  <Skeleton variant="text" width="5rem" />
+                  <Skeleton variant="rectangular" width="15rem" height="3rem" />
+                </Stack>
+                <Stack direction="row" spacing={2}>
+                  <Skeleton variant="text" width="5rem" />
+                  <Skeleton variant="rectangular" width="15rem" height="3rem" />
+                </Stack>
+                <Stack direction="row" spacing={2}>
+                  <Skeleton variant="text" width="5rem" />
+                  <Skeleton variant="rectangular" width="15rem" height="3rem" />
+                </Stack>
+              </Stack>
             </div>
           </div>
+        )}
 
-          <div className="flex justify-center">
-            <Stack spacing={2}>
-              <div>
-                <Stack direction="row" spacing={2}>
-                  <Typography width="5rem">
-                    {" "}
-                    {cookies.role === "collector" ? "Full Name:" : "Name:"}
-                  </Typography>
-                  <TextField
-                    sx={{
-                      "& label.Mui-focused": {
-                        color: "green",
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "green",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "green",
-                        },
-                      },
-                    }}
-                    value={
-                      cookies.role === "collector"
-                        ? userData.fullName
-                        : userData.name
-                    }
-                  />
-                </Stack>
+        {!loading && (
+          <div className="flex flex-col md:flex-row justify-center md:gap-[8rem] gap-[3rem] mt-10">
+            <div>
+              <div className="flex justify-center">
+                <img src={userData.pic} className="w-36 h-36" />
               </div>
 
-              <div>
-                <Stack direction="row" spacing={2}>
-                  <Typography width="5rem">Phone:</Typography>
-                  <TextField
-                    sx={{
-                      "& label.Mui-focused": {
-                        color: "green",
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "green",
-                        },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "green",
-                        },
-                      },
-                    }}
-                    value={userData.phone}
-                  />
-                </Stack>
+              <div className="flex justify-center">
+                <Typography variant="h4">
+                  {cookies.role === "collector"
+                    ? userData.fullName
+                    : userData.name}
+                </Typography>
               </div>
+              <div className="flex justify-center">
+                <Typography variant="caption">
+                  {cookies.role === "collector"
+                    ? "Collector/Volunteer"
+                    : "Collection Center"}
+                </Typography>
+              </div>
+              <div className="flex justify-center md:mt-5 mt-2">
+                <EditProfileModal />
+              </div>
+              <div className="flex justify-center md:mt-5 mt-2">
+                <DeleteAccountModal />
+              </div>
+            </div>
 
-              <div>
-                <Stack direction="row" spacing={2}>
-                  <Typography width="5rem">Email:</Typography>
-                  <TextField
-                    sx={{
-                      "& label.Mui-focused": {
-                        color: "green", // Change label color when focused
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "green", // Change border color
+            <div className="flex justify-center">
+              <Stack spacing={2}>
+                <div>
+                  <Stack direction="row" spacing={2}>
+                    <Typography width="5rem">
+                      {" "}
+                      {cookies.role === "collector" ? "Full Name:" : "Name:"}
+                    </Typography>
+                    <TextField
+                      sx={{
+                        "& label.Mui-focused": {
+                          color: "green",
                         },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "green", // Change border color when focused
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "green",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "green",
+                          },
                         },
-                      },
-                    }}
-                    value={userData.email}
-                  />
-                </Stack>
-              </div>
+                      }}
+                      value={
+                        cookies.role === "collector"
+                          ? userData.fullName
+                          : userData.name
+                      }
+                    />
+                  </Stack>
+                </div>
 
-              <div>
-                <Stack direction="row" spacing={2}>
-                  <Typography width="5rem">Address:</Typography>
-                  <TextField
-                    sx={{
-                      "& label.Mui-focused": {
-                        color: "green", // Change label color when focused
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "green", // Change border color
+                <div>
+                  <Stack direction="row" spacing={2}>
+                    <Typography width="5rem">Phone:</Typography>
+                    <TextField
+                      sx={{
+                        "& label.Mui-focused": {
+                          color: "green",
                         },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "green", // Change border color when focused
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "green",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "green",
+                          },
                         },
-                      },
-                    }}
-                    value={userData.address}
-                  />
-                </Stack>
-              </div>
+                      }}
+                      value={userData.phone}
+                    />
+                  </Stack>
+                </div>
 
-              <div>
-                <Stack direction="row" spacing={2}>
-                  <Typography width="5rem">
-                    {cookies.role === "collector"
-                      ? "Collector's ID:"
-                      : "Center's ID"}
-                  </Typography>
-                  <TextField
-                    sx={{
-                      "& label.Mui-focused": {
-                        color: "green", // Change label color when focused
-                      },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": {
-                          borderColor: "green", // Change border color
+                <div>
+                  <Stack direction="row" spacing={2}>
+                    <Typography width="5rem">Email:</Typography>
+                    <TextField
+                      sx={{
+                        "& label.Mui-focused": {
+                          color: "green", // Change label color when focused
                         },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "green", // Change border color when focused
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "green", // Change border color
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "green", // Change border color when focused
+                          },
                         },
-                      },
-                    }}
-                    value={
-                      cookies.role === "collector"
-                        ? userData.collectorID
-                        : userData.centerID
-                    }
-                  />
-                </Stack>
-              </div>
-            </Stack>
+                      }}
+                      value={userData.email}
+                    />
+                  </Stack>
+                </div>
+
+                <div>
+                  <Stack direction="row" spacing={2}>
+                    <Typography width="5rem">Address:</Typography>
+                    <TextField
+                      sx={{
+                        "& label.Mui-focused": {
+                          color: "green", // Change label color when focused
+                        },
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "green", // Change border color
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "green", // Change border color when focused
+                          },
+                        },
+                      }}
+                      value={userData.address}
+                    />
+                  </Stack>
+                </div>
+
+                <div>
+                  <Stack direction="row" spacing={2}>
+                    <Typography width="5rem">
+                      {cookies.role === "collector"
+                        ? "Collector's ID:"
+                        : "Center's ID"}
+                    </Typography>
+                    <TextField
+                      sx={{
+                        "& label.Mui-focused": {
+                          color: "green", // Change label color when focused
+                        },
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "green", // Change border color
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "green", // Change border color when focused
+                          },
+                        },
+                      }}
+                      value={
+                        cookies.role === "collector"
+                          ? userData.collectorID
+                          : userData.centerID
+                      }
+                    />
+                  </Stack>
+                </div>
+              </Stack>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </Side_nav_container>
   );
