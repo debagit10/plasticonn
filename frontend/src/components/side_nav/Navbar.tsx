@@ -185,6 +185,7 @@ const Navbar = () => {
                 },
               }}
               startIcon={<FaDropbox />}
+              onClick={() => navigate("/drop-off-centers")}
             >
               Drop off
             </Button>
