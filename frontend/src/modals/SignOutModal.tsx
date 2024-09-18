@@ -30,6 +30,7 @@ const SignOutModal = () => {
     setTimeout(() => {
       removeCookie("token");
       removeCookie("role");
+      window.location.reload();
     }, 3000);
   };
   return (
