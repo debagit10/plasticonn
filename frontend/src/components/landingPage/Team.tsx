@@ -52,7 +52,7 @@ const Team = () => {
 
             <Stack spacing={2} sx={{ marginTop: "1rem" }}>
               <Typography variant="body2" fontWeight={400} fontStyle="italic">
-                Lead Supervisor
+                Lead
               </Typography>
               <Typography gutterBottom variant="h6" fontWeight={700}>
                 DR. PETER ELIAS
