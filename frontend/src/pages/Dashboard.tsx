@@ -27,7 +27,7 @@ const { BASE_DEV_API_URL, BASE_PROD_API_URL, CLIENT_ENV } = Env;
 const Dashboard = () => {
   const navigate = useNavigate();
   const [cookies, setCookie, removeCookie] = useCookies();
-  const [history, setHistory] = useState([]);
+  const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   let apiUrl: string;
@@ -74,16 +74,11 @@ const Dashboard = () => {
         config
       );
 
-      if (response.data.error) {
-        console.log(true);
-      }
-
-      if (response.data.error) {
+      if (response) {
         setLoading(false);
+        setHistory(response.data);
         return;
       }
-
-      setHistory(response.data);
     } catch (error) {
       setLoading(false);
       console.log(error.response.data.error);
@@ -136,7 +131,7 @@ const Dashboard = () => {
           ))}
         </div>
 
-        <div className="my-10">
+        {/* <div className="my-10">
           <Typography
             variant="h6"
             sx={{
@@ -146,9 +141,9 @@ const Dashboard = () => {
             }}
           >
             Recent Drop offs
-          </Typography>
+          </Typography> */}
 
-          {loading && (
+        {/* {loading && (
             <div>
               <Stack spacing={0.5}>
                 <Skeleton variant="rectangular" height={60} />
@@ -263,8 +258,8 @@ const Dashboard = () => {
                 </Paper>
               </div>
             )
-          )}
-        </div>
+          )} */}
+        {/* </div> */}
       </div>
     </Side_nav_container>
   );
