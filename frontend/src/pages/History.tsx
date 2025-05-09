@@ -61,12 +61,15 @@ const History = () => {
         config
       );
 
+      console.log(response.data);
+
       if (response) {
         setHistory(response.data);
         setLoading(false);
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      console.log(error.response.data.error);
     }
   };
 
@@ -152,6 +155,8 @@ const History = () => {
             </Stack>
           </div>
         )}
+
+        {!history.length && <div>No history for user</div>}
 
         {history.length > 0 ? (
           <TableContainer component={Paper} sx={{ marginTop: "1rem" }}>

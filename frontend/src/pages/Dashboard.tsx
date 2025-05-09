@@ -74,12 +74,19 @@ const Dashboard = () => {
         config
       );
 
-      if (response) {
-        setLoading(false);
-        setHistory(response.data);
+      if (response.data.error) {
+        console.log(true);
       }
+
+      if (response.data.error) {
+        setLoading(false);
+        return;
+      }
+
+      setHistory(response.data);
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      console.log(error.response.data.error);
     }
   };
 
@@ -152,6 +159,8 @@ const Dashboard = () => {
               </Stack>
             </div>
           )}
+
+          {!history.length && <div>No history found for user</div>}
 
           {history.length > 0 ? (
             <TableContainer component={Paper} sx={{ marginTop: "1rem" }}>
