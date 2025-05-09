@@ -559,7 +559,7 @@ const RegisterCenter: React.FC<BodyData> = () => {
                     backgroundColor: "#0B490D",
                   },
                 }}
-                disabled={loading}
+                disabled={loading || !fileUrl || !picUrl}
                 onClick={submit}
               >
                 {loading ? "Signing up..." : "Sign up"}

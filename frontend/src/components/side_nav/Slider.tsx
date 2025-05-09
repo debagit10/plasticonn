@@ -62,16 +62,6 @@ const Slider = () => {
       icon: <ImProfile />,
       link: `/${cookies.userID}/profile`,
     },
-    {
-      name: "History",
-      icon: <LuHistory />,
-      link: `/${cookies.userID}/history`,
-    },
-    {
-      name: "Support",
-      icon: <BiSupport />,
-      link: "/support",
-    },
   ];
 
   let apiUrl: string;

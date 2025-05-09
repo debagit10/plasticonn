@@ -79,69 +79,75 @@ const DropOffs = () => {
           Drops
         </Typography>
 
-        <TableContainer component={Paper} sx={{ marginTop: "1rem" }}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>CollectorID</TableCell>
-                <TableCell>Time</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell />
-              </TableRow>
-            </TableHead>
+        {dropoffs.length > 0 ? (
+          <TableContainer component={Paper} sx={{ marginTop: "1rem" }}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>CollectorID</TableCell>
+                  <TableCell>Time</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell />
+                </TableRow>
+              </TableHead>
 
-            <TableBody>
-              {dropoffs
-                .filter((item: DropOffs) => {
-                  const now = new Date();
-                  const itemDate = new Date(item.createdAt);
-                  const diffInHours =
-                    (now.getTime() - itemDate.getTime()) / (1000 * 60 * 60);
-                  return diffInHours <= 24; // Keep only items within the last 24 hours
-                })
-                .sort(
-                  (a: any, b: any) =>
-                    new Date(b.createdAt).getTime() -
-                    new Date(a.createdAt).getTime()
-                )
-                .map((item: DropOffs) => (
-                  <TableRow
-                    key={item._id}
-                    sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
-                    }}
-                    className="cursor-pointer"
-                  >
-                    <TableCell
-                      onClick={() => navigate(`/dropoff/${item._id}/view`)}
+              <TableBody>
+                {dropoffs
+                  .filter((item: DropOffs) => {
+                    const now = new Date();
+                    const itemDate = new Date(item.createdAt);
+                    const diffInHours =
+                      (now.getTime() - itemDate.getTime()) / (1000 * 60 * 60);
+                    return diffInHours <= 24; // Keep only items within the last 24 hours
+                  })
+                  .sort(
+                    (a: any, b: any) =>
+                      new Date(b.createdAt).getTime() -
+                      new Date(a.createdAt).getTime()
+                  )
+                  .map((item: DropOffs) => (
+                    <TableRow
+                      key={item._id}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}
+                      className="cursor-pointer"
                     >
-                      <Typography variant="caption">
-                        {item?.collectorID}
-                      </Typography>
-                    </TableCell>
+                      <TableCell
+                        onClick={() => navigate(`/dropoff/${item._id}/view`)}
+                      >
+                        <Typography variant="caption">
+                          {item?.collectorID}
+                        </Typography>
+                      </TableCell>
 
-                    <TableCell
-                      onClick={() => navigate(`/dropoff/${item._id}/view`)}
-                    >
-                      <DayAndTime date={item.createdAt} />
-                    </TableCell>
+                      <TableCell
+                        onClick={() => navigate(`/dropoff/${item._id}/view`)}
+                      >
+                        <DayAndTime date={item.createdAt} />
+                      </TableCell>
 
-                    <TableCell
-                      onClick={() => navigate(`/dropoff/${item._id}/view`)}
-                    >
-                      <Typography variant="caption">
-                        {item?.accepted === false ? "Not accepted" : "Accepted"}
-                      </Typography>
-                    </TableCell>
+                      <TableCell
+                        onClick={() => navigate(`/dropoff/${item._id}/view`)}
+                      >
+                        <Typography variant="caption">
+                          {item?.accepted === false
+                            ? "Not accepted"
+                            : "Accepted"}
+                        </Typography>
+                      </TableCell>
 
-                    <TableCell>
-                      <DropoffModal />
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                      <TableCell>
+                        <DropoffModal />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
+          <div>No drops have been made yet</div>
+        )}
       </div>
     </Side_nav_container>
   );

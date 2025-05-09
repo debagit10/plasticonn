@@ -117,28 +117,29 @@ const Navbar = () => {
           </Typography>
         </div>
         <Stack padding="0.75rem" spacing={7} direction="row">
-          <div className="hidden md:block">
-            <Button
-              variant="outlined"
-              sx={{
-                borderColor: "#047308",
-                color: "white",
-                backgroundColor: "#047308",
-                borderRadius: "31px",
-                textTransform: "capitalize",
-                "&:hover": {
-                  color: "#047308",
-                  backgroundColor: "white",
+          {cookies.role === "collector" && (
+            <div className="hidden md:block">
+              <Button
+                variant="outlined"
+                sx={{
                   borderColor: "#047308",
-                },
-              }}
-              startIcon={<FaDropbox />}
-              onClick={() => navigate("/drop-off-centers")}
-            >
-              Drop off
-            </Button>
-          </div>
-
+                  color: "white",
+                  backgroundColor: "#047308",
+                  borderRadius: "31px",
+                  textTransform: "capitalize",
+                  "&:hover": {
+                    color: "#047308",
+                    backgroundColor: "white",
+                    borderColor: "#047308",
+                  },
+                }}
+                startIcon={<FaDropbox />}
+                onClick={() => navigate("/drop-off-centers")}
+              >
+                Drop off
+              </Button>
+            </div>
+          )}
           <div>
             <IconButton onClick={handleClick}>
               <Avatar alt="User Avatar" src={userData.pic} />

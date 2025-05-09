@@ -11,7 +11,7 @@ const Navbar = () => {
     { name: "About", link: "#about" },
     { name: "Team", link: "#team" },
     { name: "Contact", link: "#contact" },
-    { name: "Epicollect", link: "/epicollect" },
+    //{ name: "Epicollect", link: "/epicollect" },
   ];
 
   const navigate = useNavigate();

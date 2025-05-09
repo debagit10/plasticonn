@@ -494,7 +494,7 @@ const Register: React.FC<BodyData> = () => {
                 },
               }}
               onClick={submit}
-              disabled={loading}
+              disabled={loading || !fileUrl || !picUrl}
             >
               {loading ? "Signing up..." : "Sign up"}
             </Button>
