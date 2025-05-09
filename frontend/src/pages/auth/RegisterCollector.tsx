@@ -44,6 +44,9 @@ const Register: React.FC<BodyData> = () => {
 
   const navigate = useNavigate();
 
+  const [fileUrl, setFileUrl] = useState("");
+  const [picUrl, setPicUrl] = useState<string>("");
+
   const [formData, setFormData] = useState<BodyData>({
     fullName: "",
     phone: "",
@@ -61,9 +64,6 @@ const Register: React.FC<BodyData> = () => {
   const isFormDataComplete = () => {
     return Object.values(formData).every((value) => value.trim() !== "");
   };
-
-  const [fileUrl, setFileUrl] = useState("");
-  const [picUrl, setPicUrl] = useState<string>("");
 
   const uploadPicture = async (event: any) => {
     const pic = event.target.files[0]; // Get the first file from the input
@@ -84,6 +84,7 @@ const Register: React.FC<BodyData> = () => {
     const file = event.target.files[0]; // Get the first file from the input
     const data = new FormData();
     data.append("file", file);
+
     try {
       const response = await axios.post(`${apiUrl}/api/upload/file`, data, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -108,6 +109,8 @@ const Register: React.FC<BodyData> = () => {
     formData.pic = picUrl;
     formData.means_of_ID = fileUrl;
 
+    console.log(formData);
+
     try {
       setLoading(true);
       const form = isFormDataComplete();
@@ -124,33 +127,25 @@ const Register: React.FC<BodyData> = () => {
         formData,
         config
       );
+      console.log(response.data);
 
-      if (response.data.success) {
+      if (response.data.userID) {
         const userID = response.data.userID;
-        toast.success(response.data.success, {
+
+        toast.success("Sign up successfully", {
           position: "top-center",
           autoClose: 1000,
           onClose: () => {
             navigate(`/${userID}/dashboard`);
           },
         });
+
         setLoading(false);
-        setCookies("token", response.data.token.encryptedToken);
+        setCookies("token", response.data.token);
         setCookies("role", "collector");
       }
     } catch (error: any) {
       setLoading(false);
-      if (error.response.data.info) {
-        toast.info(error.response.data.info, {
-          position: "top-center",
-          autoClose: 1000,
-        });
-      } else if (error.response.data.error) {
-        toast.error(error.response.data.error, {
-          position: "top-center",
-          autoClose: 1000,
-        });
-      }
     }
   };
 

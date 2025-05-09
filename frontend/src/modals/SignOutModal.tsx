@@ -9,6 +9,7 @@ import {
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import { VscSignOut } from "react-icons/vsc";
+import { useNavigate } from "react-router-dom";
 
 const SignOutModal = () => {
   const [cookies, setCookies, removeCookie] = useCookies();
@@ -16,6 +17,8 @@ const SignOutModal = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const open = Boolean(anchorEl);
+
+  const navigate = useNavigate();
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -28,11 +31,16 @@ const SignOutModal = () => {
   const handleSignOut = () => {
     setLoading(true);
     setTimeout(() => {
-      removeCookie("token");
-      removeCookie("role");
+      // Loop through all cookies and remove them
+      Object.keys(cookies).forEach((cookieName) => {
+        removeCookie(cookieName, { path: "/" }); // Make sure to use same path used when setting
+      });
+
+      navigate("/"); // Redirect to landing page
       window.location.reload();
     }, 3000);
   };
+
   return (
     <div>
       <Button
