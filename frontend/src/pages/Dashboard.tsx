@@ -40,20 +40,20 @@ const Dashboard = () => {
 
   const dataList = [
     {
-      collectorTitle: "Amount of Plastics Collected",
-      centerTitle: "Amount of Plastics Recieved",
+      collectorTitle: "Number of Plastics Collected",
+      centerTitle: "Number of Plastics Recieved",
       value: "1234",
       icon: <FaBottleWater />,
     },
     {
-      collectorTitle: "Average Collection Size",
-      centerTitle: "Average Collection Size per Collector",
+      collectorTitle: "Total earnings",
+      centerTitle: "Totak earnings",
       value: "1234",
       icon: <AiOutlineBarChart />,
     },
     {
-      collectorTitle: "Amount of Plastics Recycled",
-      centerTitle: "Amount of Plastics Recycled",
+      collectorTitle: "Amount of CO2 Emissions saved from the environment",
+      centerTitle: "Amount of CO2 Emissions saved from the Environment",
       value: "1234",
       icon: <FaRecycle />,
     },
